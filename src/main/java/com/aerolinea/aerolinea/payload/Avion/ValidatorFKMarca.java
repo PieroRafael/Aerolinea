@@ -7,8 +7,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.aerolinea.aerolinea.persistence.entity.Marca;
-import com.aerolinea.aerolinea.persistence.repository.MarcaRepository;
+import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
+import com.aerolinea.aerolinea.persistence.repository.Avion.MarcaRepository;
 
 import lombok.extern.log4j.Log4j2;
 

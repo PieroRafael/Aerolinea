@@ -19,7 +19,7 @@ public class ErrorAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleMethodArgNotValid(MethodArgumentNotValidException exception, HttpServletRequest request) {
-        ApiError error = new ApiError(400, exception.getMessage(), request.getServletPath());
+        ApiError error = new ApiError(400, null, request.getServletPath());
         BindingResult bindingResult = exception.getBindingResult();
         Map<String, String> validationErrors = new HashMap<>();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {

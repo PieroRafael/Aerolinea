@@ -28,10 +28,12 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo("Proyecto Aerolinea", "API Aerolinea", "V2",
                 "Accept Services",
-                new Contact("Piero", "www.piero.com", "piero@gmail.com"),
+                new Contact("Piero", "www.piero.com", "pierobecerra19@gmail.com"),
                 "Lincese of Api",
                 "Api Lincese URL",
                 Collections.emptyList());
     }
+
+    // RUTA PARA ACCEDER A SWAGGER : http://localhost:8080/swagger-ui/
 
 }

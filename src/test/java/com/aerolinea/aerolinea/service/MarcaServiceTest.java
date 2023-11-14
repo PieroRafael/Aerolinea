@@ -3,6 +3,7 @@ package com.aerolinea.aerolinea.service;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
+import com.aerolinea.aerolinea.service.Avion.MarcaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,10 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.aerolinea.aerolinea.dto.MarcaDTO;
-import com.aerolinea.aerolinea.mapper.MarcaMapper;
-import com.aerolinea.aerolinea.persistence.entity.Marca;
-import com.aerolinea.aerolinea.persistence.repository.MarcaRepository;
+import com.aerolinea.aerolinea.dto.Marca.MarcaDTO;
+import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
+import com.aerolinea.aerolinea.persistence.repository.Avion.MarcaRepository;
 
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest

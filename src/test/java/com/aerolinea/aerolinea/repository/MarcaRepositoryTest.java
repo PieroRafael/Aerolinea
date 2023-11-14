@@ -10,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import com.aerolinea.aerolinea.persistence.entity.Marca;
-import com.aerolinea.aerolinea.persistence.repository.MarcaRepository;
+import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
+import com.aerolinea.aerolinea.persistence.repository.Avion.MarcaRepository;
 
 @DataJpaTest
 public class MarcaRepositoryTest {

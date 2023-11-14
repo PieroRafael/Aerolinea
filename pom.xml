@@ -86,7 +86,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Swagger : libreria de swagger que permite crear docuemntación de nuestro servicios -->
+		<!-- Swagger : libreria de swagger que permite crear documentación de nuestro servicios -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
@@ -102,6 +102,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!-- ModelMapper-->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.1.1</version>
 		</dependency>
 
 	</dependencies>

@@ -12,8 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "clase_social")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor 
 @Builder
 public class ClaseSocial {
 

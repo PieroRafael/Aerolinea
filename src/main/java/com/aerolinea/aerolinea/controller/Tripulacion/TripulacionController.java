@@ -3,6 +3,8 @@ package com.aerolinea.aerolinea.controller.Tripulacion;
 import com.aerolinea.aerolinea.dto.Tripulacion.TripulacionListDTO;
 import com.aerolinea.aerolinea.dto.Tripulacion.TripulacionSaveDTO;
 import com.aerolinea.aerolinea.service.Tripulacion.TripulacionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,23 +21,29 @@ public class TripulacionController {
     }
 
     @PostMapping("/Create")
-    public TripulacionSaveDTO Create(@Valid @RequestBody TripulacionSaveDTO tripulacionSaveDTO) {
-        return tripulacionService.create(tripulacionSaveDTO);
+    public ResponseEntity<TripulacionSaveDTO> Create(@Valid @RequestBody TripulacionSaveDTO tripulacionSaveDTO) {
+        TripulacionSaveDTO tripulacion = tripulacionService.create(tripulacionSaveDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "Tripulacion creado correctamente")
+                .body(tripulacion);
     }
 
     @GetMapping("/GetAll")
-    public List<TripulacionListDTO> GetAll() {
-        return tripulacionService.getAll();
+    public ResponseEntity<List<TripulacionListDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(tripulacionService.getAll());
     }
 
     @PutMapping("/UpdateById/{triId}")
-    public void UpdateById(@RequestParam Long triId, @Valid @RequestBody TripulacionSaveDTO tripulacionSaveDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long triId, @Valid @RequestBody TripulacionSaveDTO tripulacionSaveDTO) {
         tripulacionService.updateById(triId, tripulacionSaveDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{triId}")
-    public void DeleteById(@RequestParam Long triId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long triId) {
         tripulacionService.deleteById(triId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

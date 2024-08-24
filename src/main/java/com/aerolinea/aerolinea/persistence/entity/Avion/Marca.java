@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.aerolinea.aerolinea.persistence.entity.Avion.Avion;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -22,10 +21,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "marca")
-@NoArgsConstructor
 @Data
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Marca {
 

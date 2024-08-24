@@ -2,9 +2,9 @@ package com.aerolinea.aerolinea.controller.Avion;
 
 import com.aerolinea.aerolinea.dto.Asiento.AsientoListDTO;
 import com.aerolinea.aerolinea.dto.Asiento.AsientoSaveDTO;
-import com.aerolinea.aerolinea.dto.Avion.AvionListDTO;
-import com.aerolinea.aerolinea.dto.Avion.AvionSaveDTO;
 import com.aerolinea.aerolinea.service.Avion.AsientoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,43 +21,57 @@ public class AsientoController {
     }
 
     @PostMapping("/Create")
-    public AsientoSaveDTO Create(@Valid @RequestBody AsientoSaveDTO asientoSaveDTO) {
-        return asientoService.create(asientoSaveDTO);
+    public ResponseEntity<AsientoSaveDTO> Create(@Valid @RequestBody AsientoSaveDTO asientoSaveDTO) {
+        AsientoSaveDTO asiento = asientoService.create(asientoSaveDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "Asiento creado correctamente")
+                .body(asiento);
     }
 
     @GetMapping("/GetAll")
-    public List<AsientoListDTO> GetAll() {
-        return asientoService.getAll();
+    public ResponseEntity<List<AsientoListDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(asientoService.getAll());
     }
 
     @PutMapping("/UpdateById/{astId}")
-    public void UpdateById(@RequestParam Long astId, @Valid @RequestBody AsientoSaveDTO asientoSaveDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long astId, @Valid @RequestBody AsientoSaveDTO asientoSaveDTO) {
         asientoService.updateById(astId, asientoSaveDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{astId}")
-    public void DeleteById(@RequestParam Long astId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long astId) {
         asientoService.deleteById(astId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/DeactivateByAstId/{astId}")
-    public void DeactivateByAstId(@RequestParam Long astId) {
+    public ResponseEntity<Void> DeactivateByAstId(@PathVariable Long astId) {
         asientoService.deactivateByAstId(astId);
+        return ResponseEntity.status(HttpStatus.OK).
+                header("Message","Asiento desactivado correctamente").
+                build();
     }
 
     @PatchMapping("/ActivateByAstId/{astId}")
-    public void ActivateByAstId(@RequestParam Long astId) {
+    public ResponseEntity<Void> ActivateByAstId(@PathVariable Long astId) {
         asientoService.activateByAstId(astId);
+        return ResponseEntity.status(HttpStatus.OK).
+                header("Message","Asiento activado correctamente").
+                build();
     }
 
     @GetMapping("/GetAllDeactivate")
-    public List<AsientoListDTO> GetAllDeactivate() {
-        return asientoService.getAllDeactivate();
+    public ResponseEntity<List<AsientoListDTO>> GetAllDeactivate() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(asientoService.getAllDeactivate());
     }
 
     @GetMapping("/GetAllActivated")
-    public List<AsientoListDTO> GetAllActivated() {
-        return asientoService.getAllActivated();
+    public ResponseEntity<List<AsientoListDTO>> GetAllActivated() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(asientoService.getAllActivated());
     }
 
 }

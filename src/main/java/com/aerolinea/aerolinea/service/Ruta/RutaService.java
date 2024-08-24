@@ -1,11 +1,10 @@
 package com.aerolinea.aerolinea.service.Ruta;
 
 import com.aerolinea.aerolinea.dto.Ruta.RutaDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.Ruta;
 import com.aerolinea.aerolinea.persistence.repository.Ruta.RutaRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,7 +42,7 @@ public class RutaService {
     public void updateById(Long rtaId, RutaDTO rutaDTO) {
         Optional<Ruta> findRutaById = rutaRepository.findById(rtaId);
         if (!findRutaById.isPresent()) {
-            throw new Exception("Ruta Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Ruta Not Found");
         }
         Ruta updateRuta = findRutaById.get();
         updateRuta.setRtaNombre(rutaDTO.getRtaNombre());
@@ -51,16 +50,14 @@ public class RutaService {
         updateRuta.setRtaFUpdate(LocalDateTime.now());
         updateRuta.setRtaUUpdate("Piero");
         rutaRepository.save(updateRuta);
-        throw new Exception("Ruta Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long rtaId) {
         Optional<Ruta> findRutaById = rutaRepository.findById(rtaId);
         if (!findRutaById.isPresent()) {
-            throw new Exception("Ruta Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Ruta Not Found");
         }
         rutaRepository.deleteById(rtaId);
-        throw new Exception("Ruta Removed Successful", HttpStatus.OK);
     }
 
 }

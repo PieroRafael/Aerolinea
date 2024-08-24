@@ -2,6 +2,8 @@ package com.aerolinea.aerolinea.controller.Tripulacion;
 
 import com.aerolinea.aerolinea.dto.CargoTripulante.CargoTripulanteDTO;
 import com.aerolinea.aerolinea.service.Tripulacion.CargoTripulanteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,23 +20,29 @@ public class CargoTripulanteController {
     }
 
     @PostMapping("/Create")
-    public CargoTripulanteDTO Create(@Valid @RequestBody CargoTripulanteDTO cargoTripulanteDTO) {
-        return cargoTripulanteService.create(cargoTripulanteDTO);
+    public ResponseEntity<CargoTripulanteDTO >Create(@Valid @RequestBody CargoTripulanteDTO cargoTripulanteDTO) {
+        CargoTripulanteDTO cargoTripulante = cargoTripulanteService.create(cargoTripulanteDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "Cargo Tripulante creado correctamente")
+                .body(cargoTripulante);
     }
 
     @GetMapping("/GetAll")
-    public List<CargoTripulanteDTO> GetAll() {
-        return cargoTripulanteService.getAll();
+    public ResponseEntity<List<CargoTripulanteDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cargoTripulanteService.getAll());
     }
 
     @PutMapping("/UpdateById/{catId}")
-    public void UpdateById(@RequestParam Long catId, @Valid @RequestBody CargoTripulanteDTO cargoTripulanteDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long catId, @Valid @RequestBody CargoTripulanteDTO cargoTripulanteDTO) {
         cargoTripulanteService.updateById(catId, cargoTripulanteDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{catId}")
-    public void DeleteById(@RequestParam Long catId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long catId) {
         cargoTripulanteService.deleteById(catId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

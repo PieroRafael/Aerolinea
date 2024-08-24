@@ -18,8 +18,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "factura_detalle")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class FacturaDetalle {
 
@@ -28,8 +28,8 @@ public class FacturaDetalle {
     @Column(name = "fad_id" , nullable = false , unique = true)
     private Long fadId;
 
-    @Column(name = "fad_code_ticket" , nullable = false , unique = true)
-    private UUID fadCodeTicket;
+    @Column(name = "fad_code_ticket" , nullable = false , unique = true , columnDefinition = "CHAR(36)")
+    private String fadCodeTicket;
 
     @Column(name = "fad_costo_ticket" , nullable = false , precision = 10 , scale = 2)
     private BigDecimal fadCostoTicket;

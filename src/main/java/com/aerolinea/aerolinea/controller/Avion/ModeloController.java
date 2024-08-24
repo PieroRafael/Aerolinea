@@ -4,14 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.aerolinea.aerolinea.dto.Modelo.ModeloDTO;
 import com.aerolinea.aerolinea.service.Avion.ModeloService;
@@ -27,24 +22,30 @@ public class ModeloController {
     }
 
     @PostMapping("/Create")
-    public ModeloDTO Create(@Valid @RequestBody ModeloDTO modeloDTO) {
-        return modeloService.create(modeloDTO);
+    public ResponseEntity<ModeloDTO> Create(@Valid @RequestBody ModeloDTO modeloDTO) {
+        ModeloDTO modelo = modeloService.create(modeloDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "Modelo creado correctamente")
+                .body(modelo);
     }
 
     @GetMapping("/GetAll")
-    public List<ModeloDTO> GetAll() {
-        return modeloService.getAll();
+    public ResponseEntity<List<ModeloDTO>>  GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(modeloService.getAll());
     }
 
 
     @PutMapping("/UpdateById/{modId}")
-    public void UpdateById(@RequestParam Long modId, @Valid @RequestBody ModeloDTO modeloDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long modId, @Valid @RequestBody ModeloDTO modeloDTO) {
         modeloService.updateById(modId, modeloDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{modId}")
-    public void DeleteById(@RequestParam Long modId) {
+    public ResponseEntity<Void>  DeleteById(@PathVariable Long modId) {
         modeloService.deleteById(modId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

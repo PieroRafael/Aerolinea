@@ -14,7 +14,7 @@ public class TripulacionListDTO implements Serializable {
 
     private String triApellido;
 
-    private UUID triCodigo;
+    private String triCodigo;
 
     private String catNombre;
 

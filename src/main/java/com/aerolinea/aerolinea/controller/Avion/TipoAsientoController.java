@@ -2,6 +2,8 @@ package com.aerolinea.aerolinea.controller.Avion;
 
 import com.aerolinea.aerolinea.dto.TipoAsiento.TipoAsientoDTO;
 import com.aerolinea.aerolinea.service.Avion.TipoAsientoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,23 +20,29 @@ public class TipoAsientoController {
     }
 
     @PostMapping("/Create")
-    public TipoAsientoDTO Create(@Valid @RequestBody TipoAsientoDTO tipoAsientoDTO){
-        return tipoAsientoService.create(tipoAsientoDTO);
+    public ResponseEntity<TipoAsientoDTO> Create(@Valid @RequestBody TipoAsientoDTO tipoAsientoDTO){
+        TipoAsientoDTO tipoAsiento = tipoAsientoService.create(tipoAsientoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "TipoAsiento creado correctamente")
+                .body(tipoAsiento);
     }
 
     @GetMapping("/GetAll")
-    public List<TipoAsientoDTO> GetAll() {
-        return tipoAsientoService.getAll();
+    public ResponseEntity<List<TipoAsientoDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(tipoAsientoService.getAll());
     }
 
     @PutMapping("/UpdateById/{tpaId}")
-    public void UpdateById(@RequestParam Long tpaId, @Valid @RequestBody TipoAsientoDTO tipoAsientoDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long tpaId, @Valid @RequestBody TipoAsientoDTO tipoAsientoDTO) {
         tipoAsientoService.updateById(tpaId, tipoAsientoDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{tpaId}")
-    public void DeleteById(@RequestParam Long tpaId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long tpaId) {
         tipoAsientoService.deleteById(tpaId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

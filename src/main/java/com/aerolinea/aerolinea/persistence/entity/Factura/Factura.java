@@ -15,8 +15,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "factura")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Factura {
 
@@ -25,8 +25,8 @@ public class Factura {
     @Column(name = "fac_id" , nullable = false , unique = true)
     private Long facId;
 
-    @Column(name = "facCod" , nullable = false , unique = true)
-    private UUID facCod;
+    @Column(name = "fac_cod" , nullable = false , unique = true , columnDefinition = "CHAR(36)")
+    private String facCod;
 
     @Column(name = "fac_costo_total" , nullable = false , precision = 10 , scale = 2)
     private BigDecimal facCostoTotal;

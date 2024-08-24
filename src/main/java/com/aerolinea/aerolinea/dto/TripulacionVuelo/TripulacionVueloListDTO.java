@@ -17,7 +17,7 @@ public class TripulacionVueloListDTO implements Serializable {
 
     private String triApellido;
 
-    private UUID triCodigo;
+    private String triCodigo;
 
     // CargoTripulante
 
@@ -25,7 +25,7 @@ public class TripulacionVueloListDTO implements Serializable {
 
     // Vuelo
 
-    private UUID vueCod;
+    private String vueCod;
 
     private ZonedDateTime vueFHPartida;
 
@@ -39,7 +39,7 @@ public class TripulacionVueloListDTO implements Serializable {
 
     private String rtaNombre;
 
-    // PARA UTILIZAR CAMPOS EN UN DTO (LOS CUALES PROVINENEN DE UNA ENTIDAD A OTRA Y OTRA , ECT... (ENTIDADES RELACIONADAS))
+    // PARA UTILIZAR CAMPOS EN UN DTO (LOS CUALES PROVIENEN DE UNA ENTIDAD A OTRA Y OTRA , ECT... (ENTIDADES RELACIONADAS))
     // PODEMOS HACERLO DE VARIAS FORMAS :
     // 1. POR MEDIO DE LOS CAMPOS QUE DESEAMOS MOSTRAR DEFINIENDOLOS DE FORMA DIRECTA
     // ESOS CAMPOS DEBEN DE PERTENCER Y EXISTIR EN CADA UNO DE SUS ENTITYS y DEBE EXISTIR LAS RELACIONES

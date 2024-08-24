@@ -4,14 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.aerolinea.aerolinea.dto.Marca.MarcaDTO;
 import com.aerolinea.aerolinea.service.Avion.MarcaService;
@@ -27,23 +22,29 @@ public class MarcaController {
     }
 
     @PostMapping("/Create")
-    public MarcaDTO Create(@Valid @RequestBody MarcaDTO marcaDTO) {
-        return marcaService.create(marcaDTO);
+    public ResponseEntity<MarcaDTO> Create(@Valid @RequestBody MarcaDTO marcaDTO) {
+        MarcaDTO marca = marcaService.create(marcaDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "Marca creado correctamente")
+                .body(marca);
     }
 
     @GetMapping("/GetAll")
-    public List<MarcaDTO> GetAll() {
-        return marcaService.getAll();
+    public ResponseEntity<List<MarcaDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(marcaService.getAll());
     }
 
     @PutMapping("/UpdateById/{marId}")
-    public void UpdateById(@RequestParam Long marId, @Valid @RequestBody MarcaDTO marcaDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long marId, @Valid @RequestBody MarcaDTO marcaDTO) {
         marcaService.updateById(marId, marcaDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{marId}")
-    public void DeleteById(@RequestParam Long marId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long marId) {
         marcaService.deleteById(marId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

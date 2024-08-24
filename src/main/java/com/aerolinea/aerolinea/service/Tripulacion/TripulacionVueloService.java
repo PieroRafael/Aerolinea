@@ -2,13 +2,12 @@ package com.aerolinea.aerolinea.service.Tripulacion;
 
 import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloListDTO;
 import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloSaveDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.Tripulacion;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.TripulacionVuelo;
 import com.aerolinea.aerolinea.persistence.entity.Vuelo.Vuelo;
 import com.aerolinea.aerolinea.persistence.repository.Tripulacion.TripulacionVueloRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,7 +45,7 @@ public class TripulacionVueloService {
     public void updateById(Long tvuId, TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
         Optional<TripulacionVuelo> findTripulacionVueloById = tripulacionVueloRepository.findById(tvuId);
         if (!findTripulacionVueloById.isPresent()) {
-            throw new Exception("TripulacionVuelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("TripulacionVuelo Not Found");
         }
         TripulacionVuelo updateTripulacionVuelo = findTripulacionVueloById.get();
         updateTripulacionVuelo.setVuelo(Vuelo.builder().vueId(tripulacionVueloSaveDTO.getVueId()).build());
@@ -54,16 +53,14 @@ public class TripulacionVueloService {
         updateTripulacionVuelo.setTvuFUpdate(LocalDateTime.now());
         updateTripulacionVuelo.setTvuUUpdate("Piero");
         tripulacionVueloRepository.save(updateTripulacionVuelo);
-        throw new Exception("TripulacionVuelo Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long tvuId) {
         Optional<TripulacionVuelo> findTripulacionVueloById = tripulacionVueloRepository.findById(tvuId);
         if (!findTripulacionVueloById.isPresent()) {
-            throw new Exception("TripulacionVuelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("TripulacionVuelo Not Found");
         }
         tripulacionVueloRepository.deleteById(tvuId);
-        throw new Exception("TripulacionVuelo Removed Successful", HttpStatus.OK);
     }
 
 }

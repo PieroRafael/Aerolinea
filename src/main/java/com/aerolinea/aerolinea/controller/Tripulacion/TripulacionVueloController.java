@@ -3,6 +3,8 @@ package com.aerolinea.aerolinea.controller.Tripulacion;
 import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloListDTO;
 import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloSaveDTO;
 import com.aerolinea.aerolinea.service.Tripulacion.TripulacionVueloService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,23 +21,29 @@ public class TripulacionVueloController {
     }
 
     @PostMapping("/Create")
-    public TripulacionVueloSaveDTO Create(@Valid @RequestBody TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
-        return tripulacionVueloService.create(tripulacionVueloSaveDTO);
+    public ResponseEntity<TripulacionVueloSaveDTO> Create(@Valid @RequestBody TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
+        TripulacionVueloSaveDTO tripulacionVuelo = tripulacionVueloService.create(tripulacionVueloSaveDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "TripulacionVuelo creado correctamente")
+                .body(tripulacionVuelo);
     }
 
     @GetMapping("/GetAll")
-    public List<TripulacionVueloListDTO> GetAll() {
-        return tripulacionVueloService.getAll();
+    public ResponseEntity<List<TripulacionVueloListDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(tripulacionVueloService.getAll());
     }
 
     @PutMapping("/UpdateById/{tvuId}")
-    public void UpdateById(@RequestParam Long tvuId, @Valid @RequestBody TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long tvuId, @Valid @RequestBody TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
         tripulacionVueloService.updateById(tvuId, tripulacionVueloSaveDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{tvuId}")
-    public void DeleteById(@RequestParam Long tvuId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long tvuId) {
         tripulacionVueloService.deleteById(tvuId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

@@ -12,8 +12,6 @@ import com.aerolinea.aerolinea.dto.Tripulacion.TripulacionListDTO;
 import com.aerolinea.aerolinea.dto.Tripulacion.TripulacionSaveDTO;
 import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloListDTO;
 import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloSaveDTO;
-import com.aerolinea.aerolinea.dto.Usuario.UsuarioListDTO;
-import com.aerolinea.aerolinea.dto.Usuario.UsuarioSaveDTO;
 import com.aerolinea.aerolinea.dto.Vuelo.VueloListDTO;
 import com.aerolinea.aerolinea.dto.Vuelo.VueloSaveDTO;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Asiento;
@@ -22,7 +20,6 @@ import com.aerolinea.aerolinea.persistence.entity.Factura.FacturaDetalle;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.PuntoRuta;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.Tripulacion;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.TripulacionVuelo;
-import com.aerolinea.aerolinea.persistence.entity.Usuario.Usuario;
 import com.aerolinea.aerolinea.persistence.entity.Vuelo.Vuelo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -70,38 +67,6 @@ public class ModelMapperConfig {
             protected void configure() {
                 map().getMarca().setMarNombre(source.getMarNombre());
                 map().getModelo().setModNombre(source.getModNombre());
-            }
-        });
-
-        // Configuración personalizada UsuarioSaveDTO -> Usuario
-        modelMapper.addMappings(new PropertyMap<UsuarioSaveDTO, Usuario>() {
-            @Override
-            protected void configure() {
-                map().getTipoUsuario().setTpuId(source.getTpuId());
-            }
-        });
-
-        // Configuración personalizada Usuario -> UsuarioSaveDTO
-        modelMapper.addMappings(new PropertyMap<Usuario, UsuarioSaveDTO>() {
-            @Override
-            protected void configure() {
-                map().setTpuId(source.getTipoUsuario().getTpuId());
-            }
-        });
-
-        // Configuración personalizada Usuario -> UsuarioListDTO
-        modelMapper.addMappings(new PropertyMap<Usuario, UsuarioListDTO>() {
-            @Override
-            protected void configure() {
-                map().setTpuNombre(source.getTipoUsuario().getTpuNombre());
-            }
-        });
-
-        // Configuración personalizada UsuarioListDTO -> Usuario
-        modelMapper.addMappings(new PropertyMap<UsuarioListDTO,Usuario>() {
-            @Override
-            protected void configure() {
-                map().getTipoUsuario().setTpuNombre(source.getTpuNombre());
             }
         });
 

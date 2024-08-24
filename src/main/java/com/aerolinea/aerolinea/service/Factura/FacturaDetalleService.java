@@ -2,7 +2,7 @@ package com.aerolinea.aerolinea.service.Factura;
 
 import com.aerolinea.aerolinea.dto.FacturaDetalle.FacturaDetalleListDTO;
 import com.aerolinea.aerolinea.dto.FacturaDetalle.FacturaDetalleSaveDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Asiento;
 import com.aerolinea.aerolinea.persistence.entity.Factura.ClaseSocial;
 import com.aerolinea.aerolinea.persistence.entity.Factura.Factura;
@@ -11,7 +11,6 @@ import com.aerolinea.aerolinea.persistence.entity.Pasajero.Pasajero;
 import com.aerolinea.aerolinea.persistence.entity.Vuelo.Vuelo;
 import com.aerolinea.aerolinea.persistence.repository.Factura.FacturaDetalleRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ public class FacturaDetalleService {
         FacturaDetalle facturaDetalle = modelMapper.map(facturaDetalleSaveDTO,FacturaDetalle.class);
         facturaDetalle.setFadUCreate("Piero");
         facturaDetalle.setFadFCreate(LocalDateTime.now());
-        facturaDetalle.setFadCodeTicket(UUID.randomUUID());
+        facturaDetalle.setFadCodeTicket(String.valueOf(UUID.randomUUID()));
         return modelMapper.map(facturaDetalleRepository.save(facturaDetalle),FacturaDetalleSaveDTO.class);
     }
 
@@ -51,7 +50,7 @@ public class FacturaDetalleService {
     public void updateById(Long fadId, FacturaDetalleSaveDTO facturaDetalleSaveDTO) {
         Optional<FacturaDetalle> findFacturaDetalleById = facturaDetalleRepository.findById(fadId);
         if (!findFacturaDetalleById.isPresent()) {
-            throw new Exception("FacturaDetalle Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("FacturaDetalle Not Found");
         }
         FacturaDetalle updateFacturaDetalle = findFacturaDetalleById.get();
         updateFacturaDetalle.setFadCostoTicket(facturaDetalleSaveDTO.getFadCostoTicket());
@@ -64,16 +63,14 @@ public class FacturaDetalleService {
         updateFacturaDetalle.setFadFUpdate(LocalDateTime.now());
         updateFacturaDetalle.setFadUUpdate("Piero");
         facturaDetalleRepository.save(updateFacturaDetalle);
-        throw new Exception("FacturaDetalle Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long fadId) {
         Optional<FacturaDetalle> findFacturaDetalleById = facturaDetalleRepository.findById(fadId);
         if (!findFacturaDetalleById.isPresent()) {
-            throw new Exception("FacturaDetalle Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("FacturaDetalle Not Found");
         }
         facturaDetalleRepository.deleteById(fadId);
-        throw new Exception("FacturaDetalle Removed Successful", HttpStatus.OK);
     }
 
 }

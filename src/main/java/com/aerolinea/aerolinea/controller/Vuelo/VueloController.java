@@ -3,6 +3,8 @@ package com.aerolinea.aerolinea.controller.Vuelo;
 import com.aerolinea.aerolinea.dto.Vuelo.VueloListDTO;
 import com.aerolinea.aerolinea.dto.Vuelo.VueloSaveDTO;
 import com.aerolinea.aerolinea.service.Vuelo.VueloService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,43 +21,57 @@ public class VueloController {
     }
 
     @PostMapping("/Create")
-    public VueloSaveDTO Create(@Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
-        return vueloService.create(vueloSaveDTO);
+    public ResponseEntity<VueloSaveDTO> Create(@Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
+        VueloSaveDTO vuelo = vueloService.create(vueloSaveDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "Vuelo creado correctamente")
+                .body(vuelo);
     }
 
     @GetMapping("/GetAll")
-    public List<VueloListDTO> GetAll() {
-        return vueloService.getAll();
+    public ResponseEntity<List<VueloListDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(vueloService.getAll());
     }
 
     @PutMapping("/UpdateById/{vueId}")
-    public void UpdateById(@RequestParam Long vueId, @Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
+    public ResponseEntity<Void> UpdateById(@RequestParam Long vueId, @Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
         vueloService.updateById(vueId, vueloSaveDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{vueId}")
-    public void DeleteById(@RequestParam Long vueId) {
+    public ResponseEntity<Void> DeleteById(@RequestParam Long vueId) {
         vueloService.deleteById(vueId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/DeactivateByVueId/{vueId}")
-    public void DeactivateByVueId(@RequestParam Long vueId) {
+    public ResponseEntity<Void> DeactivateByVueId(@RequestParam Long vueId) {
         vueloService.deactivateByVueId(vueId);
+        return ResponseEntity.status(HttpStatus.OK).
+                header("Message","Vuelo desactivado correctamente").
+                build();
     }
 
     @PatchMapping("/ActivateByVueId/{vueId}")
-    public void ActivateByVueId(@RequestParam Long vueId) {
+    public ResponseEntity<Void> ActivateByVueId(@RequestParam Long vueId) {
         vueloService.activateByVueId(vueId);
+        return ResponseEntity.status(HttpStatus.OK).
+                header("Message","Vuelo activado correctamente").
+                build();
     }
 
     @GetMapping("/GetAllDeactivate")
-    public List<VueloListDTO> GetAllDeactivate() {
-        return vueloService.getAllDeactivate();
+    public ResponseEntity<List<VueloListDTO>> GetAllDeactivate() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(vueloService.getAllDeactivate());
     }
 
     @GetMapping("/GetAllActivated")
-    public List<VueloListDTO> GetAllActivated() {
-        return vueloService.getAllActivated();
+    public ResponseEntity<List<VueloListDTO>> GetAllActivated() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(vueloService.getAllActivated());
     }
 
 }

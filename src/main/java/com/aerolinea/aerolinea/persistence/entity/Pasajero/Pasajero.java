@@ -13,8 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "pasajero")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Pasajero {
 

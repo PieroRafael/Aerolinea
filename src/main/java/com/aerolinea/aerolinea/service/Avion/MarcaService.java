@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aerolinea.aerolinea.dto.Marca.MarcaDTO;
-import com.aerolinea.aerolinea.exception.Exception;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
 import com.aerolinea.aerolinea.persistence.repository.Avion.MarcaRepository;
 
@@ -43,23 +42,21 @@ public class MarcaService {
     public void updateById(Long marId, MarcaDTO marcaDTO) {
         Optional<Marca> findMarcaById = marcaRepository.findById(marId);
         if (!findMarcaById.isPresent()) {
-            throw new Exception("Marca Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Marca Not Found");
         }
         Marca updateMarca = findMarcaById.get();
         updateMarca.setMarNombre(marcaDTO.getMarNombre());
         updateMarca.setMarFUpdate(LocalDateTime.now());
         updateMarca.setMarUUpdate("Piero");
         marcaRepository.save(updateMarca);
-        throw new Exception("Marca Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long marId) {
         Optional<Marca> findMarcaById = marcaRepository.findById(marId);
         if (!findMarcaById.isPresent()) {
-            throw new Exception("Marca Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Marca Not Found");
         }
         marcaRepository.deleteById(marId);
-        throw new Exception("Marca Removed Successful", HttpStatus.OK);
     }
 
 }

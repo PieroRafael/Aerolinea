@@ -2,13 +2,12 @@ package com.aerolinea.aerolinea.service.Vuelo;
 
 import com.aerolinea.aerolinea.dto.Vuelo.VueloListDTO;
 import com.aerolinea.aerolinea.dto.Vuelo.VueloSaveDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Avion;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.Ruta;
 import com.aerolinea.aerolinea.persistence.entity.Vuelo.Vuelo;
 import com.aerolinea.aerolinea.persistence.repository.Vuelo.VueloRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,7 +32,7 @@ public class VueloService {
         Vuelo vuelo = modelMapper.map(vueloSaveDTO, Vuelo.class);
         vuelo.setVueFCreate(LocalDateTime.now());
         vuelo.setVueUCreate("Piero");
-        vuelo.setVueCod(UUID.randomUUID());
+        vuelo.setVueCod(String.valueOf(UUID.randomUUID()));
         return modelMapper.map(vueloRepository.save(vuelo),VueloSaveDTO.class);
     }
 
@@ -48,7 +47,7 @@ public class VueloService {
     public void updateById(Long vueId, VueloSaveDTO vueloSaveDTO) {
         Optional<Vuelo> findVueloById = vueloRepository.findById(vueId);
         if (!findVueloById.isPresent()) {
-            throw new Exception("Vuelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Vuelo Not Found");
         }
         Vuelo updateVuelo = findVueloById.get();
         updateVuelo.setVueFHPartida(vueloSaveDTO.getVueFHPartida());
@@ -58,34 +57,30 @@ public class VueloService {
         updateVuelo.setVueFUpdate(LocalDateTime.now());
         updateVuelo.setVueUUpdate("Piero");
         vueloRepository.save(updateVuelo);
-        throw new Exception("Vuelo Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long vueId) {
         Optional<Vuelo> findVueloById = vueloRepository.findById(vueId);
         if (!findVueloById.isPresent()) {
-            throw new Exception("Vuelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Vuelo Not Found");
         }
         vueloRepository.deleteById(vueId);
-        throw new Exception("Vuelo Removed Successful", HttpStatus.OK);
     }
 
     public void deactivateByVueId(Long vueId) {
         Optional<Vuelo> findVueloById = vueloRepository.findById(vueId);
         if (!findVueloById.isPresent()) {
-            throw new Exception("Vuelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Vuelo Not Found");
         }
         vueloRepository.deactivateByVueId(vueId);
-        throw new Exception("Vuelo Status : Disabled ", HttpStatus.OK);
     }
 
     public void activateByVueId(Long vueId) {
         Optional<Vuelo> findVueloById = vueloRepository.findById(vueId);
         if (!findVueloById.isPresent()) {
-            throw new Exception("Vuelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Vuelo Not Found");
         }
         vueloRepository.activateByVueId(vueId);
-        throw new Exception("Vuelo Status : Activated ", HttpStatus.OK);
     }
 
     public List<VueloListDTO> getAllDeactivate() {

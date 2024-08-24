@@ -2,12 +2,11 @@ package com.aerolinea.aerolinea.service.Tripulacion;
 
 import com.aerolinea.aerolinea.dto.Tripulacion.TripulacionListDTO;
 import com.aerolinea.aerolinea.dto.Tripulacion.TripulacionSaveDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.CargoTripulante;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.Tripulacion;
 import com.aerolinea.aerolinea.persistence.repository.Tripulacion.TripulacionRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,7 +29,7 @@ public class TripulacionService {
 
     public TripulacionSaveDTO create(TripulacionSaveDTO tripulacionSaveDTO) {
         Tripulacion tripulacion = modelMapper.map(tripulacionSaveDTO, Tripulacion.class);
-        tripulacion.setTriCodigo(UUID.randomUUID());
+        tripulacion.setTriCodigo(String.valueOf(UUID.randomUUID()));
         tripulacion.setTriFCreate(LocalDateTime.now());
         tripulacion.setTriUCreate("Piero");
         return modelMapper.map(tripulacionRepository.save(tripulacion),TripulacionSaveDTO.class);
@@ -47,7 +46,7 @@ public class TripulacionService {
     public void updateById(Long triId, TripulacionSaveDTO tripulacionSaveDTO) {
         Optional<Tripulacion> findTripulacionById = tripulacionRepository.findById(triId);
         if (!findTripulacionById.isPresent()) {
-            throw new Exception("Tripulacion Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Tripulacion Not Found");
         }
         Tripulacion updateTripulacion = findTripulacionById.get();
         updateTripulacion.setTriNombre(tripulacionSaveDTO.getTriNombre());
@@ -56,16 +55,14 @@ public class TripulacionService {
         updateTripulacion.setTriFUpdate(LocalDateTime.now());
         updateTripulacion.setTriUUpdate("Piero");
         tripulacionRepository.save(updateTripulacion);
-        throw new Exception("Tripulacion Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long triId) {
         Optional<Tripulacion> findTripulacionById = tripulacionRepository.findById(triId);
         if (!findTripulacionById.isPresent()) {
-            throw new Exception("Tripulacion Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Tripulacion Not Found");
         }
         tripulacionRepository.deleteById(triId);
-        throw new Exception("Tripulacion Removed Successful", HttpStatus.OK);
     }
 
 }

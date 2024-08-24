@@ -19,6 +19,6 @@ public class VueloListDTO implements Serializable {
 
     private String rtaNombre;
 
-    private UUID vueCod;
+    private String vueCod;
 
 }

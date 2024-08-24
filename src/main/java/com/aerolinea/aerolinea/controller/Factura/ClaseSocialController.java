@@ -2,6 +2,8 @@ package com.aerolinea.aerolinea.controller.Factura;
 
 import com.aerolinea.aerolinea.dto.ClaseSocial.ClaseSocialDTO;
 import com.aerolinea.aerolinea.service.Factura.ClaseSocialService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,23 +20,29 @@ public class ClaseSocialController {
     }
 
     @PostMapping("/Create")
-    public ClaseSocialDTO Create(@Valid @RequestBody ClaseSocialDTO claseSocialDTO) {
-        return claseSocialService.create(claseSocialDTO);
+    public ResponseEntity<ClaseSocialDTO> Create(@Valid @RequestBody ClaseSocialDTO claseSocialDTO) {
+        ClaseSocialDTO claseSocial = claseSocialService.create(claseSocialDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "ClaseSocial creado correctamente")
+                .body(claseSocial);
     }
 
     @GetMapping("/GetAll")
-    public List<ClaseSocialDTO> GetAll() {
-        return claseSocialService.getAll();
+    public ResponseEntity<List<ClaseSocialDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(claseSocialService.getAll());
     }
 
     @PutMapping("/UpdateById/{clsId}")
-    public void UpdateById(@RequestParam Long clsId, @Valid @RequestBody ClaseSocialDTO claseSocialDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long clsId, @Valid @RequestBody ClaseSocialDTO claseSocialDTO) {
         claseSocialService.updateById(clsId, claseSocialDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{clsId}")
-    public void DeleteById(@RequestParam Long clsId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long clsId) {
         claseSocialService.deleteById(clsId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

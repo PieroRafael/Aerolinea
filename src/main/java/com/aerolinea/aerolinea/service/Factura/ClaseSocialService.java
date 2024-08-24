@@ -1,11 +1,10 @@
 package com.aerolinea.aerolinea.service.Factura;
 
 import com.aerolinea.aerolinea.dto.ClaseSocial.ClaseSocialDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Factura.ClaseSocial;
 import com.aerolinea.aerolinea.persistence.repository.Factura.ClaseSocialRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,23 +42,21 @@ public class ClaseSocialService {
     public void updateById(Long clsId, ClaseSocialDTO claseSocialDTO) {
         Optional<ClaseSocial> findClaseSocialById = claseSocialRepository.findById(clsId);
         if (!findClaseSocialById.isPresent()) {
-            throw new Exception("ClaseSocial Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("ClaseSocial Not Found");
         }
         ClaseSocial updateClaseSocial = findClaseSocialById.get();
         updateClaseSocial.setClsNombre(claseSocialDTO.getClsNombre());
         updateClaseSocial.setClsFUpdate(LocalDateTime.now());
         updateClaseSocial.setClsUUpdate("Piero");
         claseSocialRepository.save(updateClaseSocial);
-        throw new Exception("ClaseSocial Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long clsId) {
         Optional<ClaseSocial> findClaseSocialById = claseSocialRepository.findById(clsId);
         if (!findClaseSocialById.isPresent()) {
-            throw new Exception("ClaseSocial Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("ClaseSocial Not Found");
         }
         claseSocialRepository.deleteById(clsId);
-        throw new Exception("ClaseSocial Removed Successful", HttpStatus.OK);
     }
 
 }

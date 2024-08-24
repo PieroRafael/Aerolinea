@@ -3,6 +3,8 @@ package com.aerolinea.aerolinea.controller.Ruta;
 import com.aerolinea.aerolinea.dto.PuntoRuta.PuntoRutaListDTO;
 import com.aerolinea.aerolinea.dto.PuntoRuta.PuntoRutaSaveDTO;
 import com.aerolinea.aerolinea.service.Ruta.PuntoRutaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,23 +21,29 @@ public class PuntoRutaController {
     }
 
     @PostMapping("/Create")
-    public PuntoRutaSaveDTO Create(@Valid @RequestBody PuntoRutaSaveDTO puntoRutaSaveDTO){
-        return puntoRutaService.create(puntoRutaSaveDTO);
+    public ResponseEntity<PuntoRutaSaveDTO> Create(@Valid @RequestBody PuntoRutaSaveDTO puntoRutaSaveDTO){
+        PuntoRutaSaveDTO puntoRuta = puntoRutaService.create(puntoRutaSaveDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "PuntoRuta creado correctamente")
+                .body(puntoRuta);
     }
 
     @GetMapping("/GetAll")
-    public List<PuntoRutaListDTO> GetAll() {
-        return puntoRutaService.getAll();
+    public ResponseEntity<List<PuntoRutaListDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(puntoRutaService.getAll());
     }
 
     @PutMapping("/UpdateById/{ptrId}")
-    public void UpdateById(@RequestParam Long ptrId, @Valid @RequestBody PuntoRutaSaveDTO puntoRutaSaveDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long ptrId, @Valid @RequestBody PuntoRutaSaveDTO puntoRutaSaveDTO) {
         puntoRutaService.updateById(ptrId, puntoRutaSaveDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{ptrId}")
-    public void DeleteById(@RequestParam Long ptrId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long ptrId) {
         puntoRutaService.deleteById(ptrId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

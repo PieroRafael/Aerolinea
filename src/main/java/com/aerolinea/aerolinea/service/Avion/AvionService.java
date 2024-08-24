@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aerolinea.aerolinea.dto.Avion.AvionListDTO;
 import com.aerolinea.aerolinea.dto.Avion.AvionSaveDTO;
-import com.aerolinea.aerolinea.exception.Exception;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Avion;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Modelo;
@@ -46,7 +45,7 @@ public class AvionService {
     public void updateById(Long aviId, AvionSaveDTO avionSaveDTO) {
         Optional<Avion> findAvionById = avionRepository.findById(aviId);
         if (!findAvionById.isPresent()) {
-            throw new Exception("Avion Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Avion Not Found");
         }
         Avion updateAvion = findAvionById.get();
         updateAvion.setAviCantidadAsientos(avionSaveDTO.getAviCantidadAsientos());
@@ -56,34 +55,30 @@ public class AvionService {
         updateAvion.setAviFUpdate(LocalDateTime.now());
         updateAvion.setAviUUpdate("Piero");
         avionRepository.save(updateAvion);
-        throw new Exception("Avion Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long aviId) {
         Optional<Avion> findAvionById = avionRepository.findById(aviId);
         if (!findAvionById.isPresent()) {
-            throw new Exception("Avion Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Avion Not Found");
         }
         avionRepository.deleteById(aviId);
-        throw new Exception("Avion Removed Successful", HttpStatus.OK);
     }
 
     public void deactivateByAviId(Long aviId) {
         Optional<Avion> findAvionById = avionRepository.findById(aviId);
         if (!findAvionById.isPresent()) {
-            throw new Exception("Avion Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Avion Not Found");
         }
         avionRepository.deactivateByAviId(aviId);
-        throw new Exception("Avion Status : Disabled ", HttpStatus.OK);
     }
 
     public void activateByAviId(Long aviId) {
         Optional<Avion> findAvionById = avionRepository.findById(aviId);
         if (!findAvionById.isPresent()) {
-            throw new Exception("Avion Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Avion Not Found");
         }
         avionRepository.activateByAviId(aviId);
-        throw new Exception("Avion Status : Activated ", HttpStatus.OK);
     }
 
     public List<AvionListDTO> getAllDeactivate() {

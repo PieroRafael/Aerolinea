@@ -2,13 +2,12 @@ package com.aerolinea.aerolinea.service.Ruta;
 
 import com.aerolinea.aerolinea.dto.PuntoRuta.PuntoRutaListDTO;
 import com.aerolinea.aerolinea.dto.PuntoRuta.PuntoRutaSaveDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.PuntoEscala;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.PuntoRuta;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.Ruta;
 import com.aerolinea.aerolinea.persistence.repository.Ruta.PuntoRutaRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,22 +45,20 @@ public class PuntoRutaService {
     public void updateById(Long ptrId, PuntoRutaSaveDTO puntoRutaSaveDTO) {
         Optional<PuntoRuta> findPuntoRutaById = puntoRutaRepository.findById(ptrId);
         if (!findPuntoRutaById.isPresent()) {
-            throw new Exception("PuntoRuta Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("PuntoRuta Not Found");
         }
         PuntoRuta updatePuntoRuta = findPuntoRutaById.get();
         updatePuntoRuta.setPtrOrden(puntoRutaSaveDTO.getPtrOrden());
         updatePuntoRuta.setRuta(Ruta.builder().rtaId(puntoRutaSaveDTO.getRtaId()).build());
         updatePuntoRuta.setPuntoEscala(PuntoEscala.builder().pesId(puntoRutaSaveDTO.getPesId()).build());
         puntoRutaRepository.save(updatePuntoRuta);
-        throw new Exception("PuntoRuta Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long ptrId) {
         Optional<PuntoRuta> findPuntoRutaById = puntoRutaRepository.findById(ptrId);
         if (!findPuntoRutaById.isPresent()) {
-            throw new Exception("PuntoRuta Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("PuntoRuta Not Found");
         }
         puntoRutaRepository.deleteById(ptrId);
-        throw new Exception("PuntoRuta Removed Successful", HttpStatus.OK);
     }
 }

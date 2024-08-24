@@ -1,11 +1,10 @@
 package com.aerolinea.aerolinea.service.Ruta;
 
 import com.aerolinea.aerolinea.dto.PuntoEscala.PuntoEscalaDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.PuntoEscala;
 import com.aerolinea.aerolinea.persistence.repository.Ruta.PuntoEscalaRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,7 +42,7 @@ public class PuntoEscalaService {
     public void updateById(Long pesId, PuntoEscalaDTO puntoEscalaDTO) {
         Optional<PuntoEscala> findPuntoEscalaById = puntoEscalaRepository.findById(pesId);
         if (!findPuntoEscalaById.isPresent()) {
-            throw new Exception("PuntoEscala Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("PuntoEscala Not Found");
         }
         PuntoEscala updatePuntoEscala = findPuntoEscalaById.get();
         updatePuntoEscala.setPesNombrePunto(puntoEscalaDTO.getPesNombrePunto());
@@ -52,16 +51,14 @@ public class PuntoEscalaService {
         updatePuntoEscala.setPesFUpdate(LocalDateTime.now());
         updatePuntoEscala.setPesUUpdate("Piero");
         puntoEscalaRepository.save(updatePuntoEscala);
-        throw new Exception("PuntoEscala Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long pesId) {
         Optional<PuntoEscala> findPuntoEscalaById = puntoEscalaRepository.findById(pesId);
         if (!findPuntoEscalaById.isPresent()) {
-            throw new Exception("PuntoEscala Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("PuntoEscala Not Found");
         }
         puntoEscalaRepository.deleteById(pesId);
-        throw new Exception("PuntoEscala Removed Successful", HttpStatus.OK);
     }
 
 }

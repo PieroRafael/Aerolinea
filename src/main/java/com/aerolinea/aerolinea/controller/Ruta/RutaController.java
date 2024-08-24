@@ -2,6 +2,8 @@ package com.aerolinea.aerolinea.controller.Ruta;
 
 import com.aerolinea.aerolinea.dto.Ruta.RutaDTO;
 import com.aerolinea.aerolinea.service.Ruta.RutaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,23 +20,29 @@ public class RutaController {
     }
 
     @PostMapping("/Create")
-    public RutaDTO Create(@Valid @RequestBody RutaDTO rutaDTO){
-        return rutaService.create(rutaDTO);
+    public ResponseEntity<RutaDTO> Create(@Valid @RequestBody RutaDTO rutaDTO){
+        RutaDTO ruta = rutaService.create(rutaDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Message", "Ruta creado correctamente")
+                .body(ruta);
     }
 
     @GetMapping("/GetAll")
-    public List<RutaDTO> GetAll() {
-        return rutaService.getAll();
+    public ResponseEntity<List<RutaDTO>> GetAll() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(rutaService.getAll());
     }
 
     @PutMapping("/UpdateById/{rtaId}")
-    public void UpdateById(@RequestParam Long rtaId, @Valid @RequestBody RutaDTO rutaDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long rtaId, @Valid @RequestBody RutaDTO rutaDTO) {
         rutaService.updateById(rtaId, rutaDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{rtaId}")
-    public void DeleteById(@RequestParam Long rtaId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long rtaId) {
         rutaService.deleteById(rtaId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

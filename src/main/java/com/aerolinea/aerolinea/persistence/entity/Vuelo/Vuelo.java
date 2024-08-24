@@ -30,8 +30,8 @@ public class Vuelo {
     @Column(name = "vue_id" , nullable = false , unique = true)
     private Long vueId;
 
-    @Column(name = "vueCod" , nullable = false , unique = true)
-    private UUID vueCod;
+    @Column(name = "vueCod" , nullable = false , unique = true, columnDefinition = "CHAR(36)")
+    private String vueCod;
 
     @Column(name = "vue_f_h_partida" , nullable = false)
     private ZonedDateTime vueFHPartida;

@@ -18,6 +18,6 @@ public class FacturaListDTO implements Serializable {
 
     private LocalDate facFecha;
 
-    private UUID facCod;
+    private String facCod;
 
 }

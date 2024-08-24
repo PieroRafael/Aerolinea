@@ -2,11 +2,10 @@ package com.aerolinea.aerolinea.service.Factura;
 
 import com.aerolinea.aerolinea.dto.Factura.FacturaSaveDTO;
 import com.aerolinea.aerolinea.dto.Factura.FacturaListDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Factura.Factura;
 import com.aerolinea.aerolinea.persistence.repository.Factura.FacturaRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,7 +30,7 @@ public class FacturaService {
         Factura factura = modelMapper.map(facturaDTO,Factura.class);
         factura.setFacFCreate(LocalDateTime.now());
         factura.setFacUCreate("Piero");
-        factura.setFacCod(UUID.randomUUID());
+        factura.setFacCod(String.valueOf(UUID.randomUUID()));
         return modelMapper.map(facturaRepository.save(factura), FacturaSaveDTO.class);
     }
 
@@ -46,7 +45,7 @@ public class FacturaService {
     public void updateById(Long facId, FacturaSaveDTO facturaDTO) {
         Optional<Factura> findFacturaById = facturaRepository.findById(facId);
         if (!findFacturaById.isPresent()) {
-            throw new Exception("Factura Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Factura Not Found");
         }
         Factura updateFactura = findFacturaById.get();
         updateFactura.setFacCostoTotal(facturaDTO.getFacCostoTotal());
@@ -55,16 +54,14 @@ public class FacturaService {
         updateFactura.setFacFUpdate(LocalDateTime.now());
         updateFactura.setFacUUpdate("Piero");
         facturaRepository.save(updateFactura);
-        throw new Exception("Factura Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long facId) {
         Optional<Factura> findFacturaById = facturaRepository.findById(facId);
         if (!findFacturaById.isPresent()) {
-            throw new Exception("Factura Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Factura Not Found");
         }
         facturaRepository.deleteById(facId);
-        throw new Exception("Factura Removed Successful", HttpStatus.OK);
     }
 
 }

@@ -1,11 +1,10 @@
 package com.aerolinea.aerolinea.service.Avion;
 
 import com.aerolinea.aerolinea.dto.TipoAsiento.TipoAsientoDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Avion.TipoAsiento;
 import com.aerolinea.aerolinea.persistence.repository.Avion.TipoAsientoRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,23 +41,21 @@ public class TipoAsientoService {
     public void updateById(Long tpaId, TipoAsientoDTO tipoAsientoDTO) {
         Optional<TipoAsiento> findTipoAsientoById = tipoAsientoRepository.findById(tpaId);
         if (!findTipoAsientoById.isPresent()) {
-            throw new Exception("TipoAsiento Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("TipoAsiento Not Found");
         }
         TipoAsiento updateTipoAsiento = findTipoAsientoById.get();
         updateTipoAsiento.setTpaNombre(tipoAsientoDTO.getTpaNombre());
         updateTipoAsiento.setTpaFUpdate(LocalDateTime.now());
         updateTipoAsiento.setTpaUUpdate("Piero");
         tipoAsientoRepository.save(updateTipoAsiento);
-        throw new Exception("TipoAsiento Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long tpaId) {
         Optional<TipoAsiento> findTipoAsientoById = tipoAsientoRepository.findById(tpaId);
         if (!findTipoAsientoById.isPresent()) {
-            throw new Exception("TipoAsiento Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("TipoAsiento Not Found");
         }
         tipoAsientoRepository.deleteById(tpaId);
-        throw new Exception("TipoAsiento Removed Successful", HttpStatus.OK);
     }
 
 }

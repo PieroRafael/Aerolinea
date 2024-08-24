@@ -15,8 +15,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "tripulacion")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Tripulacion {
 
@@ -31,8 +31,8 @@ public class Tripulacion {
     @Column(name = "tri_apellido" , length = 100 ,nullable = false, unique = true)
     private String triApellido;
 
-    @Column(name = "tri_codigo" , nullable = false , unique = true)
-    private UUID triCodigo;
+    @Column(name = "tri_codigo" , nullable = false , unique = true , columnDefinition = "CHAR(36)")
+    private String triCodigo;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cat_id", referencedColumnName = "cat_id", nullable = false)

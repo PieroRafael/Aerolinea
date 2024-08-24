@@ -1,12 +1,11 @@
 package com.aerolinea.aerolinea.service.Pasajero;
 
 import com.aerolinea.aerolinea.dto.Pasajero.PasajeroDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Pasajero.Genero;
 import com.aerolinea.aerolinea.persistence.entity.Pasajero.Pasajero;
 import com.aerolinea.aerolinea.persistence.repository.Pasajero.PasajeroRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,7 +44,7 @@ public class PasajeroService {
     public void updateById(Long pasId, PasajeroDTO pasajeroDTO) {
         Optional<Pasajero> findPasajeroById = pasajeroRepository.findById(pasId);
         if (!findPasajeroById.isPresent()) {
-            throw new Exception("Pasajero Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Pasajero Not Found");
         }
         Pasajero updatePasajero = findPasajeroById.get();
         updatePasajero.setPasNombre(pasajeroDTO.getPasNombre());
@@ -55,16 +54,14 @@ public class PasajeroService {
         updatePasajero.setPasFUpdate(LocalDateTime.now());
         updatePasajero.setPasUUpdate("Piero");
         pasajeroRepository.save(updatePasajero);
-        throw new Exception("Pasajero Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long pasId) {
         Optional<Pasajero> findPasajeroById = pasajeroRepository.findById(pasId);
         if (!findPasajeroById.isPresent()) {
-            throw new Exception("Pasajero Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Pasajero Not Found");
         }
         pasajeroRepository.deleteById(pasId);
-        throw new Exception("Pasajero Removed Successful", HttpStatus.OK);
     }
 
 }

@@ -22,10 +22,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "modelo")
-@NoArgsConstructor
 @Data
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Modelo {
 

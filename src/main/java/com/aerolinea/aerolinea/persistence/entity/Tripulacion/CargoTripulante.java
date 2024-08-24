@@ -12,8 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "cargo_tripulante")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CargoTripulante {
 

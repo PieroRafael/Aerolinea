@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aerolinea.aerolinea.dto.Modelo.ModeloDTO;
-import com.aerolinea.aerolinea.exception.Exception;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Modelo;
 import com.aerolinea.aerolinea.persistence.repository.Avion.ModeloRepository;
 
@@ -43,24 +42,22 @@ public class ModeloService {
     public void updateById(Long modId, ModeloDTO modeloDTO) {
         Optional<Modelo> findModeloById = modeloRepository.findById(modId);
         if (!findModeloById.isPresent()) {
-            throw new Exception("Modelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Modelo Not Found");
         }
         Modelo updateModelo = findModeloById.get();
         updateModelo.setModNombre(modeloDTO.getModNombre());
         updateModelo.setModFUpdate(LocalDateTime.now());
         updateModelo.setModUUpdate("Piero");
         modeloRepository.save(updateModelo);
-        throw new Exception("Modelo Update Successful", HttpStatus.OK);
     }
 
 
     public void deleteById(Long modId) {
         Optional<Modelo> findModeloById = modeloRepository.findById(modId);
         if (!findModeloById.isPresent()) {
-            throw new Exception("Modelo Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Modelo Not Found");
         }
         modeloRepository.deleteById(modId);
-        throw new Exception("Modelo Removed Successful", HttpStatus.OK);
     }
 
 }

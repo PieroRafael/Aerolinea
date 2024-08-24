@@ -11,15 +11,15 @@ public class FacturaDetalleListDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private UUID fadCodeTicket;
+    private String fadCodeTicket;
 
     private BigDecimal fadCostoTicket;
 
     private BigDecimal fadDescuento;
 
-    private UUID vueCod;
+    private String vueCod;
 
-    private UUID facCod;
+    private String facCod;
 
     private String clsNombre;
 

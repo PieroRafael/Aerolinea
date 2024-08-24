@@ -2,11 +2,11 @@ package com.aerolinea.aerolinea.service.Avion;
 
 import com.aerolinea.aerolinea.dto.Asiento.AsientoListDTO;
 import com.aerolinea.aerolinea.dto.Asiento.AsientoSaveDTO;
-import com.aerolinea.aerolinea.exception.Exception;
+import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Avion.*;
 import com.aerolinea.aerolinea.persistence.repository.Avion.AsientoRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,7 +44,7 @@ public class AsientoService {
     public void updateById(Long astId, AsientoSaveDTO asientoSaveDTO) {
         Optional<Asiento> findAsientoById = asientoRepository.findById(astId);
         if (!findAsientoById.isPresent()) {
-            throw new Exception("Asiento Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Asiento Not Found");
         }
         Asiento updateAsiento = findAsientoById.get();
         updateAsiento.setTipoAsiento(TipoAsiento.builder().tpaId(asientoSaveDTO.getTpaId()).build());
@@ -53,34 +53,30 @@ public class AsientoService {
         updateAsiento.setAstFUpdate(LocalDateTime.now());
         updateAsiento.setAstUUpdate("Piero");
         asientoRepository.save(updateAsiento);
-        throw new Exception("Asiento Update Successful", HttpStatus.OK);
     }
 
     public void deleteById(Long astId) {
         Optional<Asiento> findAsientoById = asientoRepository.findById(astId);
         if (!findAsientoById.isPresent()) {
-            throw new Exception("Asiento Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Asiento Not Found");
         }
         asientoRepository.deleteById(astId);
-        throw new Exception("Asiento Removed Successful", HttpStatus.OK);
     }
 
     public void deactivateByAstId(Long astId) {
         Optional<Asiento> findAsientoById = asientoRepository.findById(astId);
         if (!findAsientoById.isPresent()) {
-            throw new Exception("Asiento Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Asiento Not Found");
         }
         asientoRepository.deactivateByAstId(astId);
-        throw new Exception("Asiento Status : Disabled ", HttpStatus.OK);
     }
 
     public void activateByAstId(Long astId) {
         Optional<Asiento> findAsientoById = asientoRepository.findById(astId);
         if (!findAsientoById.isPresent()) {
-            throw new Exception("Asiento Not Found", HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Asiento Not Found");
         }
         asientoRepository.activateByAstId(astId);
-        throw new Exception("Asiento Status : Activated ", HttpStatus.OK);
     }
 
     public List<AsientoListDTO> getAllDeactivate() {

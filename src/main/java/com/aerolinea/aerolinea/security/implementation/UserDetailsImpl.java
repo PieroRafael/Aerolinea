@@ -32,7 +32,6 @@ public class UserDetailsImpl implements UserDetails {
     private String userPassword;
 
     private String userPhoto;
-    private String userShortBio;
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(Users users) {
@@ -47,7 +46,6 @@ public class UserDetailsImpl implements UserDetails {
                 users.getUserNickname(),
                 users.getUserPassword(),
                 users.getUserPhoto(),
-                users.getUserShortBio(),
                 authorities);
     }
 

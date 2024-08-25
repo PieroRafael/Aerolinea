@@ -40,9 +40,6 @@ public class Users {
     @Column(name = "user_photo", length = 100)
     private String userPhoto;
 
-    @Column(name = "user_short_bio", length = 200)
-    private String userShortBio;
-
     @Column(name = "user_state", nullable = false, columnDefinition = "integer default 1")
     private Integer userState;
 

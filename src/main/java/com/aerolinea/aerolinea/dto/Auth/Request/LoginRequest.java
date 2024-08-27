@@ -3,7 +3,6 @@ package com.aerolinea.aerolinea.dto.Auth.Request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.aerolinea.aerolinea.payload.Auth.ExistPassword;
 import com.aerolinea.aerolinea.payload.Auth.ExistUserNickname;
 import lombok.AllArgsConstructor;
 import lombok.Data;

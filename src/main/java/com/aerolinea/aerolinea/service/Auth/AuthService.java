@@ -4,6 +4,7 @@ import com.aerolinea.aerolinea.dto.Auth.Request.LoginRequest;
 import com.aerolinea.aerolinea.dto.Auth.Request.SignupRequest;
 import com.aerolinea.aerolinea.dto.Auth.Response.JwtResponse;
 import com.aerolinea.aerolinea.dto.Auth.Response.MessageResponse;
+import com.aerolinea.aerolinea.exception.custom.InvalidPasswordException;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Auth.Role;
 import com.aerolinea.aerolinea.persistence.entity.Auth.TRole;
@@ -81,12 +82,19 @@ public class AuthService {
     }
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
+        Users user = userRepository.findByUserNickname(loginRequest.getUserNickname()).orElseThrow(
+                () -> new ResourceNotFoundException("User Not Found With UserNickname")
+        );
+        if (!encoder.matches(loginRequest.getUserPassword(), user.getUserPassword())) {
+            throw new InvalidPasswordException("Password Incorrect");
+        }
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUserNickname(),
                         loginRequest.getUserPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.aerolinea.aerolinea.exception;
 
+import com.aerolinea.aerolinea.exception.custom.InvalidPasswordException;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.NOT_FOUND, ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorDetailsPassword> handleInvalidPasswordException(InvalidPasswordException ex) {
+        ErrorDetailsPassword errorDetailsPassword = new ErrorDetailsPassword(ex.getMessage());
+        return new ResponseEntity<>(errorDetailsPassword, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

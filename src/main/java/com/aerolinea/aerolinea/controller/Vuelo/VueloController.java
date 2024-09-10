@@ -35,19 +35,19 @@ public class VueloController {
     }
 
     @PutMapping("/UpdateById/{vueId}")
-    public ResponseEntity<Void> UpdateById(@RequestParam Long vueId, @Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
+    public ResponseEntity<Void> UpdateById(@PathVariable Long vueId, @Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
         vueloService.updateById(vueId, vueloSaveDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/DeleteById/{vueId}")
-    public ResponseEntity<Void> DeleteById(@RequestParam Long vueId) {
+    public ResponseEntity<Void> DeleteById(@PathVariable Long vueId) {
         vueloService.deleteById(vueId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/DeactivateByVueId/{vueId}")
-    public ResponseEntity<Void> DeactivateByVueId(@RequestParam Long vueId) {
+    public ResponseEntity<Void> DeactivateByVueId(@PathVariable Long vueId) {
         vueloService.deactivateByVueId(vueId);
         return ResponseEntity.status(HttpStatus.OK).
                 header("Message","Vuelo desactivado correctamente").
@@ -55,7 +55,7 @@ public class VueloController {
     }
 
     @PatchMapping("/ActivateByVueId/{vueId}")
-    public ResponseEntity<Void> ActivateByVueId(@RequestParam Long vueId) {
+    public ResponseEntity<Void> ActivateByVueId(@PathVariable Long vueId) {
         vueloService.activateByVueId(vueId);
         return ResponseEntity.status(HttpStatus.OK).
                 header("Message","Vuelo activado correctamente").

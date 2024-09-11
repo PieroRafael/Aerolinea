@@ -1,7 +1,8 @@
 package com.aerolinea.aerolinea.service.Avion;
 
 import com.aerolinea.aerolinea.dto.Asiento.AsientoListDTO;
-import com.aerolinea.aerolinea.dto.Asiento.AsientoSaveDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Create.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Create.CreateResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Avion.*;
 import com.aerolinea.aerolinea.persistence.repository.Avion.AsientoRepository;
@@ -26,11 +27,11 @@ public class AsientoService {
         this.modelMapper = modelMapper;
     }
 
-    public AsientoSaveDTO create(AsientoSaveDTO asientoSaveDTO) {
-        Asiento asiento = modelMapper.map(asientoSaveDTO,Asiento.class);
+    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
+        Asiento asiento = modelMapper.map(createRequestDTO,Asiento.class);
         asiento.setAstFCreate(LocalDateTime.now());
         asiento.setAstUCreate("Piero");
-        return modelMapper.map(asientoRepository.save(asiento),AsientoSaveDTO.class);
+        return modelMapper.map(asientoRepository.save(asiento), CreateResponseDTO.class);
     }
 
     public List<AsientoListDTO> getAll() {
@@ -41,15 +42,15 @@ public class AsientoService {
         return lstAsientoListDTO;
     }
 
-    public void updateById(Long astId, AsientoSaveDTO asientoSaveDTO) {
+    public void updateById(Long astId, CreateRequestDTO createRequestDTO) {
         Optional<Asiento> findAsientoById = asientoRepository.findById(astId);
         if (!findAsientoById.isPresent()) {
             throw new ResourceNotFoundException("Asiento Not Found");
         }
         Asiento updateAsiento = findAsientoById.get();
-        updateAsiento.setTipoAsiento(TipoAsiento.builder().tpaId(asientoSaveDTO.getTpaId()).build());
-        updateAsiento.setAvion(Avion.builder().aviId(asientoSaveDTO.getAviId()).build());
-        updateAsiento.setAstNombre(asientoSaveDTO.getAstNombre());
+        updateAsiento.setTipoAsiento(TipoAsiento.builder().tpaId(createRequestDTO.getTpaId()).build());
+        updateAsiento.setAvion(Avion.builder().aviId(createRequestDTO.getAviId()).build());
+        updateAsiento.setAstNombre(createRequestDTO.getAstNombre());
         updateAsiento.setAstFUpdate(LocalDateTime.now());
         updateAsiento.setAstUUpdate("Piero");
         asientoRepository.save(updateAsiento);

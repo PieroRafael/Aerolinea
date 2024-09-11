@@ -1,4 +1,4 @@
-package com.aerolinea.aerolinea.exception;
+package com.aerolinea.aerolinea.exception.details;
 
 import lombok.Data;
 

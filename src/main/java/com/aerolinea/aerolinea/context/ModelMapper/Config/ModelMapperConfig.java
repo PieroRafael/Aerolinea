@@ -1,7 +1,8 @@
-package com.aerolinea.aerolinea.context;
+package com.aerolinea.aerolinea.context.ModelMapper.Config;
 
 import com.aerolinea.aerolinea.dto.Asiento.AsientoListDTO;
-import com.aerolinea.aerolinea.dto.Asiento.AsientoSaveDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Create.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Create.CreateResponseDTO;
 import com.aerolinea.aerolinea.dto.Avion.AvionListDTO;
 import com.aerolinea.aerolinea.dto.Avion.AvionSaveDTO;
 import com.aerolinea.aerolinea.dto.FacturaDetalle.FacturaDetalleListDTO;
@@ -70,8 +71,8 @@ public class ModelMapperConfig {
             }
         });
 
-        // Configuración personalizada AsientoSaveDTO -> Asiento
-        modelMapper.addMappings(new PropertyMap<AsientoSaveDTO, Asiento>() {
+        // Configuración personalizada Asiento: CreateRequestDTO -> Asiento
+        modelMapper.addMappings(new PropertyMap<CreateRequestDTO, Asiento>() {
             @Override
             protected void configure() {
                 map().getTipoAsiento().setTpaId(source.getTpaId());
@@ -79,8 +80,8 @@ public class ModelMapperConfig {
             }
         });
 
-        // Configuración personalizada Asiento -> AsientoSaveDTO
-        modelMapper.addMappings(new PropertyMap<Asiento, AsientoSaveDTO>() {
+        // Configuración personalizada Asiento: Asiento -> CreateResponseDTO
+        modelMapper.addMappings(new PropertyMap<Asiento, CreateResponseDTO>() {
             @Override
             protected void configure() {
                 map().setAviId(source.getAvion().getAviId());

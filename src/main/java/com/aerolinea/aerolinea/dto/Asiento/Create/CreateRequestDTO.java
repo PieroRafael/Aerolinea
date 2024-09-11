@@ -1,4 +1,4 @@
-package com.aerolinea.aerolinea.dto.Asiento;
+package com.aerolinea.aerolinea.dto.Asiento.Create;
 
 import com.aerolinea.aerolinea.payload.Asiento.ExistFKAvion;
 import com.aerolinea.aerolinea.payload.Asiento.ExistFKTipoAsiento;
@@ -7,12 +7,9 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Data
-public class AsientoSaveDTO implements Serializable{
-
-    private static final long serialVersionUID = 1L;
+public class CreateRequestDTO {
 
     @NotNull
     @NotBlank
@@ -26,4 +23,5 @@ public class AsientoSaveDTO implements Serializable{
     @NotNull
     @ExistFKTipoAsiento
     private Long tpaId;
+
 }

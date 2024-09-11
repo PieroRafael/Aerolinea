@@ -1,5 +1,7 @@
-package com.aerolinea.aerolinea.exception;
+package com.aerolinea.aerolinea.exception.global;
 
+import com.aerolinea.aerolinea.exception.details.ErrorDetails;
+import com.aerolinea.aerolinea.exception.details.ErrorDetailsPassword;
 import com.aerolinea.aerolinea.exception.custom.InvalidPasswordException;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;

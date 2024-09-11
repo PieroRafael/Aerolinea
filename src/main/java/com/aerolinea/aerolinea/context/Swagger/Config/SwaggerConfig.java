@@ -1,4 +1,4 @@
-package com.aerolinea.aerolinea.context;
+package com.aerolinea.aerolinea.context.Swagger.Config;
 
 import java.util.Arrays;
 import java.util.Collections;

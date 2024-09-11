@@ -1,7 +1,8 @@
 package com.aerolinea.aerolinea.controller.Avion;
 
 import com.aerolinea.aerolinea.dto.Asiento.AsientoListDTO;
-import com.aerolinea.aerolinea.dto.Asiento.AsientoSaveDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Create.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Create.CreateResponseDTO;
 import com.aerolinea.aerolinea.service.Avion.AsientoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,9 @@ public class AsientoController {
     }
 
     @PostMapping("/Create")
-    public ResponseEntity<AsientoSaveDTO> Create(@Valid @RequestBody AsientoSaveDTO asientoSaveDTO) {
-        AsientoSaveDTO asiento = asientoService.create(asientoSaveDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "Asiento creado correctamente")
-                .body(asiento);
+    public ResponseEntity<CreateResponseDTO> Create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
+        CreateResponseDTO asiento = asientoService.create(createRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(asiento);
     }
 
     @GetMapping("/GetAll")
@@ -35,8 +34,8 @@ public class AsientoController {
     }
 
     @PutMapping("/UpdateById/{astId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long astId, @Valid @RequestBody AsientoSaveDTO asientoSaveDTO) {
-        asientoService.updateById(astId, asientoSaveDTO);
+    public ResponseEntity<Void> UpdateById(@PathVariable Long astId, @Valid @RequestBody CreateRequestDTO createRequestDTO) {
+        asientoService.updateById(astId, createRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

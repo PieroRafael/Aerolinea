@@ -1,4 +1,4 @@
-package com.aerolinea.aerolinea.security;
+package com.aerolinea.aerolinea.security.config;
 
 import com.aerolinea.aerolinea.security.implementation.UserDetailsServiceImpl;
 import com.aerolinea.aerolinea.security.jwt.AuthEntryPointJwt;

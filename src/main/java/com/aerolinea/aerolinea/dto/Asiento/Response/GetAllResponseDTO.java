@@ -1,9 +1,9 @@
-package com.aerolinea.aerolinea.dto.Asiento;
+package com.aerolinea.aerolinea.dto.Asiento.Response;
 
 import lombok.Data;
 
 @Data
-public class AsientoListDTO {
+public class GetAllResponseDTO {
 
     private String astNombre;
 

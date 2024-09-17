@@ -1,8 +1,9 @@
 package com.aerolinea.aerolinea.controller.Avion;
 
-import com.aerolinea.aerolinea.dto.Asiento.AsientoListDTO;
-import com.aerolinea.aerolinea.dto.Asiento.Create.CreateRequestDTO;
-import com.aerolinea.aerolinea.dto.Asiento.Create.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Request.UpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Request.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Response.CreateResponseDTO;
 import com.aerolinea.aerolinea.service.Avion.AsientoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Asiento")
+@RequestMapping("/asiento")
 public class AsientoController {
 
     private final AsientoService asientoService;
@@ -21,56 +22,50 @@ public class AsientoController {
         this.asientoService = asientoService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<CreateResponseDTO> Create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
+    @PostMapping("/create")
+    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
         CreateResponseDTO asiento = asientoService.create(createRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(asiento);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<AsientoListDTO>> GetAll() {
+    @GetMapping("/getAll")
+    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(asientoService.getAll());
     }
 
-    @PutMapping("/UpdateById/{astId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long astId, @Valid @RequestBody CreateRequestDTO createRequestDTO) {
-        asientoService.updateById(astId, createRequestDTO);
+    @PutMapping("/updateById/{astId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long astId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
+        asientoService.updateById(astId, updateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{astId}")
-    public ResponseEntity<Void> DeleteById(@PathVariable Long astId) {
+    @DeleteMapping("/deleteById/{astId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long astId) {
         asientoService.deleteById(astId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/DeactivateByAstId/{astId}")
-    public ResponseEntity<Void> DeactivateByAstId(@PathVariable Long astId) {
+    @PatchMapping("/deactivateByAstId/{astId}")
+    public ResponseEntity<Void> deactivateByAstId(@PathVariable Long astId) {
         asientoService.deactivateByAstId(astId);
-        return ResponseEntity.status(HttpStatus.OK).
-                header("Message","Asiento desactivado correctamente").
-                build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/ActivateByAstId/{astId}")
-    public ResponseEntity<Void> ActivateByAstId(@PathVariable Long astId) {
+    @PatchMapping("/activateByAstId/{astId}")
+    public ResponseEntity<Void> activateByAstId(@PathVariable Long astId) {
         asientoService.activateByAstId(astId);
-        return ResponseEntity.status(HttpStatus.OK).
-                header("Message","Asiento activado correctamente").
-                build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/GetAllDeactivate")
-    public ResponseEntity<List<AsientoListDTO>> GetAllDeactivate() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(asientoService.getAllDeactivate());
+    @GetMapping("/getAllDeactivate")
+    public ResponseEntity<List<GetAllResponseDTO>> getAllDeactivate() {
+        return ResponseEntity.status(HttpStatus.OK).body(asientoService.getAllDeactivate());
     }
 
-    @GetMapping("/GetAllActivated")
-    public ResponseEntity<List<AsientoListDTO>> GetAllActivated() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(asientoService.getAllActivated());
+    @GetMapping("/getAllActivated")
+    public ResponseEntity<List<GetAllResponseDTO>> getAllActivated() {
+        return ResponseEntity.status(HttpStatus.OK).body(asientoService.getAllActivated());
     }
 
 }

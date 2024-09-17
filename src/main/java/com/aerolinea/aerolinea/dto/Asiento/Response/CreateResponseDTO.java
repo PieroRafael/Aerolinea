@@ -1,4 +1,4 @@
-package com.aerolinea.aerolinea.dto.Asiento.Create;
+package com.aerolinea.aerolinea.dto.Asiento.Response;
 
 import lombok.Data;
 

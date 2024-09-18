@@ -4,15 +4,17 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.aerolinea.aerolinea.dto.Marca.Request.UpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Marca.Response.CreateResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.aerolinea.aerolinea.dto.Marca.MarcaDTO;
+import com.aerolinea.aerolinea.dto.Marca.Request.CreateRequestDTO;
 import com.aerolinea.aerolinea.service.Avion.MarcaService;
 
 @RestController
-@RequestMapping("/Marca")
+@RequestMapping("/marca")
 public class MarcaController {
 
     private final MarcaService marcaService;
@@ -21,28 +23,26 @@ public class MarcaController {
         this.marcaService = marcaService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<MarcaDTO> Create(@Valid @RequestBody MarcaDTO marcaDTO) {
-        MarcaDTO marca = marcaService.create(marcaDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "Marca creado correctamente")
-                .body(marca);
+    @PostMapping("/create")
+    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
+        CreateResponseDTO marca = marcaService.create(createRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(marca);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<MarcaDTO>> GetAll() {
+    @GetMapping("/getAll")
+    public ResponseEntity<List<CreateResponseDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(marcaService.getAll());
     }
 
-    @PutMapping("/UpdateById/{marId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long marId, @Valid @RequestBody MarcaDTO marcaDTO) {
-        marcaService.updateById(marId, marcaDTO);
+    @PutMapping("/updateById/{marId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long marId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
+        marcaService.updateById(marId, updateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{marId}")
-    public ResponseEntity<Void> DeleteById(@PathVariable Long marId) {
+    @DeleteMapping("/deleteById/{marId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long marId) {
         marcaService.deleteById(marId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

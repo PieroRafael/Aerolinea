@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.aerolinea.aerolinea.dto.Marca.Request.UpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Marca.Response.CreateResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.aerolinea.aerolinea.dto.Marca.MarcaDTO;
+import com.aerolinea.aerolinea.dto.Marca.Request.CreateRequestDTO;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
 import com.aerolinea.aerolinea.persistence.repository.Avion.MarcaRepository;
 
@@ -24,28 +26,28 @@ public class MarcaService {
         this.modelMapper = modelMapper;
     }
 
-    public MarcaDTO create(MarcaDTO marcaDTO) {
-        Marca marca = modelMapper.map(marcaDTO , Marca.class);
+    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
+        Marca marca = modelMapper.map(createRequestDTO, Marca.class);
         marca.setMarFCreate(LocalDateTime.now());
         marca.setMarUCreate("Piero");
-        return modelMapper.map(marcaRepository.save(marca) , MarcaDTO.class);
+        return modelMapper.map(marcaRepository.save(marca) , CreateResponseDTO.class);
     }
 
-    public List<MarcaDTO> getAll() {
+    public List<CreateResponseDTO> getAll() {
         List<Marca> lstMarca = marcaRepository.findAll();
-        List<MarcaDTO> lstMarcaDTO = lstMarca.stream()
-                .map(marca -> modelMapper.map(marca , MarcaDTO.class))
+        List<CreateResponseDTO> lstCreateResponseDTO = lstMarca.stream()
+                .map(marca -> modelMapper.map(marca , CreateResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstMarcaDTO;
+        return lstCreateResponseDTO;
     }
 
-    public void updateById(Long marId, MarcaDTO marcaDTO) {
+    public void updateById(Long marId, UpdateByIdRequestDTO updateByIdRequestDTO) {
         Optional<Marca> findMarcaById = marcaRepository.findById(marId);
         if (!findMarcaById.isPresent()) {
             throw new ResourceNotFoundException("Marca Not Found");
         }
         Marca updateMarca = findMarcaById.get();
-        updateMarca.setMarNombre(marcaDTO.getMarNombre());
+        updateMarca.setMarNombre(updateByIdRequestDTO.getMarNombre());
         updateMarca.setMarFUpdate(LocalDateTime.now());
         updateMarca.setMarUUpdate("Piero");
         marcaRepository.save(updateMarca);

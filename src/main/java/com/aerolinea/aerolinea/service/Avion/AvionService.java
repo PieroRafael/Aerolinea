@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.aerolinea.aerolinea.dto.Avion.Request.UpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Avion.Response.CreateResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.aerolinea.aerolinea.dto.Avion.AvionListDTO;
-import com.aerolinea.aerolinea.dto.Avion.AvionSaveDTO;
+import com.aerolinea.aerolinea.dto.Avion.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Avion.Request.CreateRequestDTO;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Avion;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Modelo;
@@ -27,31 +29,31 @@ public class AvionService {
         this.modelMapper = modelMapper;
     }
 
-    public AvionSaveDTO create(AvionSaveDTO avionSaveDTO) {
-        Avion avion = modelMapper.map(avionSaveDTO,Avion.class);
+    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
+        Avion avion = modelMapper.map(createRequestDTO,Avion.class);
         avion.setAviFCreate(LocalDateTime.now());
         avion.setAviUCreate("Piero");
-        return modelMapper.map(avionRepository.save(avion),AvionSaveDTO.class);
+        return modelMapper.map(avionRepository.save(avion), CreateResponseDTO.class);
     }
 
-    public List<AvionListDTO> getAll() {
+    public List<GetAllResponseDTO> getAll() {
         List<Avion> lstAvion = avionRepository.findAll();
-        List<AvionListDTO> lstAvionDTO = lstAvion.stream()
-                .map(avion -> modelMapper.map(avion,AvionListDTO.class))
+        List<GetAllResponseDTO> lstAvionDTO = lstAvion.stream()
+                .map(avion -> modelMapper.map(avion, GetAllResponseDTO.class))
                 .collect(Collectors.toList());
         return lstAvionDTO;
     }
 
-    public void updateById(Long aviId, AvionSaveDTO avionSaveDTO) {
+    public void updateById(Long aviId, UpdateByIdRequestDTO updateByIdRequestDTO) {
         Optional<Avion> findAvionById = avionRepository.findById(aviId);
         if (!findAvionById.isPresent()) {
             throw new ResourceNotFoundException("Avion Not Found");
         }
         Avion updateAvion = findAvionById.get();
-        updateAvion.setAviCantidadAsientos(avionSaveDTO.getAviCantidadAsientos());
-        updateAvion.setAviRegistro(avionSaveDTO.getAviRegistro());
-        updateAvion.setMarca(Marca.builder().marId(avionSaveDTO.getMarId()).build());
-        updateAvion.setModelo(Modelo.builder().modId(avionSaveDTO.getModId()).build());
+        updateAvion.setAviCantidadAsientos(updateByIdRequestDTO.getAviCantidadAsientos());
+        updateAvion.setAviRegistro(updateByIdRequestDTO.getAviRegistro());
+        updateAvion.setMarca(Marca.builder().marId(updateByIdRequestDTO.getMarId()).build());
+        updateAvion.setModelo(Modelo.builder().modId(updateByIdRequestDTO.getModId()).build());
         updateAvion.setAviFUpdate(LocalDateTime.now());
         updateAvion.setAviUUpdate("Piero");
         avionRepository.save(updateAvion);
@@ -81,18 +83,18 @@ public class AvionService {
         avionRepository.activateByAviId(aviId);
     }
 
-    public List<AvionListDTO> getAllDeactivate() {
+    public List<GetAllResponseDTO> getAllDeactivate() {
         List<Avion> lstAvion = avionRepository.getAllDeactivate();
-        List<AvionListDTO> lstAvionDTO = lstAvion.stream()
-                .map(avion -> modelMapper.map(avion,AvionListDTO.class))
+        List<GetAllResponseDTO> lstAvionDTO = lstAvion.stream()
+                .map(avion -> modelMapper.map(avion, GetAllResponseDTO.class))
                 .collect(Collectors.toList());
         return lstAvionDTO;
     }
 
-    public List<AvionListDTO> getAllActivated() {
+    public List<GetAllResponseDTO> getAllActivated() {
         List<Avion> lstAvion = avionRepository.getAllActivated();
-        List<AvionListDTO> lstAvionDTO = lstAvion.stream()
-                .map(avion -> modelMapper.map(avion,AvionListDTO.class))
+        List<GetAllResponseDTO> lstAvionDTO = lstAvion.stream()
+                .map(avion -> modelMapper.map(avion, GetAllResponseDTO.class))
                 .collect(Collectors.toList());
         return lstAvionDTO;
     }

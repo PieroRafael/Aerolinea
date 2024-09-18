@@ -1,4 +1,4 @@
-package com.aerolinea.aerolinea.dto.Avion;
+package com.aerolinea.aerolinea.dto.Avion.Request;
 
 import javax.validation.constraints.*;
 
@@ -11,9 +11,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class AvionSaveDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class CreateRequestDTO {
 
     @NotBlank
     @NotNull

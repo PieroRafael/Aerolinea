@@ -12,7 +12,7 @@ public class UpdateByIdRequestDTO {
 
     @NotNull
     @NotBlank
-    // Validacion para astNombre
+    // Crear validación única
     private String astNombre;
 
     @NotNull

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.aerolinea.aerolinea.dto.Marca.Request.UpdateByIdRequestDTO;
 import com.aerolinea.aerolinea.dto.Marca.Response.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Marca.Response.GetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -33,12 +34,12 @@ public class MarcaService {
         return modelMapper.map(marcaRepository.save(marca) , CreateResponseDTO.class);
     }
 
-    public List<CreateResponseDTO> getAll() {
+    public List<GetAllResponseDTO> getAll() {
         List<Marca> lstMarca = marcaRepository.findAll();
-        List<CreateResponseDTO> lstCreateResponseDTO = lstMarca.stream()
-                .map(marca -> modelMapper.map(marca , CreateResponseDTO.class))
+        List<GetAllResponseDTO> lstGetAllResponseDTO = lstMarca.stream()
+                .map(marca -> modelMapper.map(marca , GetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstCreateResponseDTO;
+        return lstGetAllResponseDTO;
     }
 
     public void updateById(Long marId, UpdateByIdRequestDTO updateByIdRequestDTO) {

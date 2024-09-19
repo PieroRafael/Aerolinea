@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.aerolinea.aerolinea.dto.Marca.Request.UpdateByIdRequestDTO;
 import com.aerolinea.aerolinea.dto.Marca.Response.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Marca.Response.GetAllResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +31,8 @@ public class MarcaController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<CreateResponseDTO>> getAll() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(marcaService.getAll());
+    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(marcaService.getAll());
     }
 
     @PutMapping("/updateById/{marId}")

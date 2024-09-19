@@ -1,6 +1,9 @@
 package com.aerolinea.aerolinea.service.Factura;
 
-import com.aerolinea.aerolinea.dto.ClaseSocial.ClaseSocialDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.UpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.GetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Factura.ClaseSocial;
 import com.aerolinea.aerolinea.persistence.repository.Factura.ClaseSocialRepository;
@@ -24,28 +27,28 @@ public class ClaseSocialService {
         this.modelMapper = modelMapper;
     }
 
-    public ClaseSocialDTO create(ClaseSocialDTO claseSocialDTO) {
-        ClaseSocial claseSocial = modelMapper.map(claseSocialDTO,ClaseSocial.class);
+    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
+        ClaseSocial claseSocial = modelMapper.map(createRequestDTO,ClaseSocial.class);
         claseSocial.setClsFCreate(LocalDateTime.now());
         claseSocial.setClsUCreate("Piero");
-        return modelMapper.map(claseSocialRepository.save(claseSocial),ClaseSocialDTO.class);
+        return modelMapper.map(claseSocialRepository.save(claseSocial), CreateResponseDTO.class);
     }
 
-    public List<ClaseSocialDTO> getAll() {
+    public List<GetAllResponseDTO> getAll() {
         List<ClaseSocial> lstClaseSocial = claseSocialRepository.findAll();
-        List<ClaseSocialDTO> lstClaseSocialDTO = lstClaseSocial.stream()
-                .map(claseSocial -> modelMapper.map(claseSocial,ClaseSocialDTO.class))
+        List<GetAllResponseDTO> lstGetAllResponseDTO = lstClaseSocial.stream()
+                .map(claseSocial -> modelMapper.map(claseSocial, GetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstClaseSocialDTO;
+        return lstGetAllResponseDTO;
     }
 
-    public void updateById(Long clsId, ClaseSocialDTO claseSocialDTO) {
+    public void updateById(Long clsId, UpdateByIdRequestDTO updateByIdRequestDTO) {
         Optional<ClaseSocial> findClaseSocialById = claseSocialRepository.findById(clsId);
         if (!findClaseSocialById.isPresent()) {
             throw new ResourceNotFoundException("ClaseSocial Not Found");
         }
         ClaseSocial updateClaseSocial = findClaseSocialById.get();
-        updateClaseSocial.setClsNombre(claseSocialDTO.getClsNombre());
+        updateClaseSocial.setClsNombre(updateByIdRequestDTO.getClsNombre());
         updateClaseSocial.setClsFUpdate(LocalDateTime.now());
         updateClaseSocial.setClsUUpdate("Piero");
         claseSocialRepository.save(updateClaseSocial);

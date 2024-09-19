@@ -1,6 +1,9 @@
 package com.aerolinea.aerolinea.controller.Factura;
 
-import com.aerolinea.aerolinea.dto.ClaseSocial.ClaseSocialDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.UpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.GetAllResponseDTO;
 import com.aerolinea.aerolinea.service.Factura.ClaseSocialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ClaseSocial")
+@RequestMapping("/claseSocial")
 public class ClaseSocialController {
 
     private final ClaseSocialService claseSocialService;
@@ -19,28 +22,25 @@ public class ClaseSocialController {
         this.claseSocialService = claseSocialService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<ClaseSocialDTO> Create(@Valid @RequestBody ClaseSocialDTO claseSocialDTO) {
-        ClaseSocialDTO claseSocial = claseSocialService.create(claseSocialDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "ClaseSocial creado correctamente")
-                .body(claseSocial);
+    @PostMapping("/create")
+    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
+        CreateResponseDTO claseSocial = claseSocialService.create(createRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(claseSocial);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<ClaseSocialDTO>> GetAll() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(claseSocialService.getAll());
+    @GetMapping("/getAll")
+    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(claseSocialService.getAll());
     }
 
-    @PutMapping("/UpdateById/{clsId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long clsId, @Valid @RequestBody ClaseSocialDTO claseSocialDTO) {
-        claseSocialService.updateById(clsId, claseSocialDTO);
+    @PutMapping("/updateById/{clsId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long clsId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
+        claseSocialService.updateById(clsId, updateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{clsId}")
-    public ResponseEntity<Void> DeleteById(@PathVariable Long clsId) {
+    @DeleteMapping("/deleteById/{clsId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long clsId) {
         claseSocialService.deleteById(clsId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

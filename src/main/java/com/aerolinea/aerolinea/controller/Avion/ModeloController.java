@@ -4,15 +4,18 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.aerolinea.aerolinea.dto.Modelo.Request.UpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Response.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Response.GetAllResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.aerolinea.aerolinea.dto.Modelo.ModeloDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Request.CreateRequestDTO;
 import com.aerolinea.aerolinea.service.Avion.ModeloService;
 
 @RestController
-@RequestMapping("/Modelo")
+@RequestMapping("/modelo")
 public class ModeloController {
 
     private final ModeloService modeloService;
@@ -21,29 +24,25 @@ public class ModeloController {
         this.modeloService = modeloService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<ModeloDTO> Create(@Valid @RequestBody ModeloDTO modeloDTO) {
-        ModeloDTO modelo = modeloService.create(modeloDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "Modelo creado correctamente")
-                .body(modelo);
+    @PostMapping("/create")
+    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
+        CreateResponseDTO modelo = modeloService.create(createRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelo);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<ModeloDTO>>  GetAll() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(modeloService.getAll());
+    @GetMapping("/getAll")
+    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(modeloService.getAll());
     }
 
-
-    @PutMapping("/UpdateById/{modId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long modId, @Valid @RequestBody ModeloDTO modeloDTO) {
-        modeloService.updateById(modId, modeloDTO);
+    @PutMapping("/updateById/{modId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long modId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
+        modeloService.updateById(modId, updateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{modId}")
-    public ResponseEntity<Void>  DeleteById(@PathVariable Long modId) {
+    @DeleteMapping("/deleteById/{modId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long modId) {
         modeloService.deleteById(modId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

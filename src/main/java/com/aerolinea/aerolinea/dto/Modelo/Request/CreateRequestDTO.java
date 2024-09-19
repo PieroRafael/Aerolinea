@@ -1,6 +1,4 @@
-package com.aerolinea.aerolinea.dto.Modelo;
-
-import java.io.Serializable;
+package com.aerolinea.aerolinea.dto.Modelo.Request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,9 +9,7 @@ import com.aerolinea.aerolinea.payload.Modelo.UniqueModNombre;
 import lombok.Data;
 
 @Data
-public class ModeloDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class CreateRequestDTO {
 
     @NotBlank
     @NotNull

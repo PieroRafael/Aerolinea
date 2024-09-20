@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.aerolinea.aerolinea.dto.Modelo.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.Modelo.Response.CreateResponseDTO;
-import com.aerolinea.aerolinea.dto.Modelo.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Request.ModeloUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Response.ModeloCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Response.ModeloGetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.aerolinea.aerolinea.dto.Modelo.Request.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Request.ModeloCreateRequestDTO;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Modelo;
 import com.aerolinea.aerolinea.persistence.repository.Avion.ModeloRepository;
 
@@ -27,28 +27,28 @@ public class ModeloService {
         this.modelMapper = modelMapper;
     }
 
-    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
-        Modelo modelo = modelMapper.map(createRequestDTO, Modelo.class);
+    public ModeloCreateResponseDTO create(ModeloCreateRequestDTO modeloCreateRequestDTO) {
+        Modelo modelo = modelMapper.map(modeloCreateRequestDTO, Modelo.class);
         modelo.setModFCreate(LocalDateTime.now());
         modelo.setModUCreate("Piero");
-        return modelMapper.map(modeloRepository.save(modelo) , CreateResponseDTO.class);
+        return modelMapper.map(modeloRepository.save(modelo) , ModeloCreateResponseDTO.class);
     }
 
-   public List<GetAllResponseDTO> getAll() {
+   public List<ModeloGetAllResponseDTO> getAll() {
         List<Modelo> lstModelo = modeloRepository.findAll();
-        List<GetAllResponseDTO> lstGetAllResponseDTO = lstModelo.stream()
-                .map(modelo -> modelMapper.map(modelo, GetAllResponseDTO.class))
+        List<ModeloGetAllResponseDTO> lstModeloGetAllResponseDTO = lstModelo.stream()
+                .map(modelo -> modelMapper.map(modelo, ModeloGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstGetAllResponseDTO;
+        return lstModeloGetAllResponseDTO;
     }
 
-    public void updateById(Long modId, UpdateByIdRequestDTO updateByIdRequestDTO) {
+    public void updateById(Long modId, ModeloUpdateByIdRequestDTO modeloUpdateByIdRequestDTO) {
         Optional<Modelo> findModeloById = modeloRepository.findById(modId);
         if (!findModeloById.isPresent()) {
             throw new ResourceNotFoundException("Modelo Not Found");
         }
         Modelo updateModelo = findModeloById.get();
-        updateModelo.setModNombre(updateByIdRequestDTO.getModNombre());
+        updateModelo.setModNombre(modeloUpdateByIdRequestDTO.getModNombre());
         updateModelo.setModFUpdate(LocalDateTime.now());
         updateModelo.setModUUpdate("Piero");
         modeloRepository.save(updateModelo);

@@ -4,14 +4,14 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.aerolinea.aerolinea.dto.Avion.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.Avion.Response.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Avion.Request.AvionUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Avion.Response.AvionCreateResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.aerolinea.aerolinea.dto.Avion.Response.GetAllResponseDTO;
-import com.aerolinea.aerolinea.dto.Avion.Request.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Avion.Response.AvionGetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Avion.Request.AvionCreateRequestDTO;
 import com.aerolinea.aerolinea.service.Avion.AvionService;
 
 @RestController
@@ -25,19 +25,19 @@ public class AvionController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
-        CreateResponseDTO avion = avionService.create(createRequestDTO);
+    public ResponseEntity<AvionCreateResponseDTO> create(@Valid @RequestBody AvionCreateRequestDTO avionCreateRequestDTO) {
+        AvionCreateResponseDTO avion = avionService.create(avionCreateRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(avion);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+    public ResponseEntity<List<AvionGetAllResponseDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(avionService.getAll());
     }
 
     @PutMapping("/updateById/{aviId}")
-    public ResponseEntity <Void> updateById(@PathVariable Long aviId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
-        avionService.updateById(aviId, updateByIdRequestDTO);
+    public ResponseEntity <Void> updateById(@PathVariable Long aviId, @Valid @RequestBody AvionUpdateByIdRequestDTO avionUpdateByIdRequestDTO) {
+        avionService.updateById(aviId, avionUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -60,13 +60,13 @@ public class AvionController {
     }
 
     @GetMapping("/getAllDeactivate")
-    public  ResponseEntity<List<GetAllResponseDTO>> getAllDeactivate() {
+    public  ResponseEntity<List<AvionGetAllResponseDTO>> getAllDeactivate() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(avionService.getAllDeactivate());
     }
 
     @GetMapping("/getAllActivated")
-    public ResponseEntity<List<GetAllResponseDTO>> getAllActivated() {
+    public ResponseEntity<List<AvionGetAllResponseDTO>> getAllActivated() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(avionService.getAllActivated());
     }

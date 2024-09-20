@@ -1,9 +1,9 @@
 package com.aerolinea.aerolinea.service.Avion;
 
-import com.aerolinea.aerolinea.dto.TipoAsiento.Request.CreateRequestDTO;
-import com.aerolinea.aerolinea.dto.TipoAsiento.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.TipoAsiento.Response.CreateResponseDTO;
-import com.aerolinea.aerolinea.dto.TipoAsiento.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Request.TipoAsientoCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Request.TipoAsientoUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Response.TipoAsientoCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Response.TipoAsientoGetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Avion.TipoAsiento;
 import com.aerolinea.aerolinea.persistence.repository.Avion.TipoAsientoRepository;
@@ -26,28 +26,28 @@ public class TipoAsientoService {
         this.modelMapper = modelMapper;
     }
 
-    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
-        TipoAsiento tipoAsiento = modelMapper.map(createRequestDTO, TipoAsiento.class);
+    public TipoAsientoCreateResponseDTO create(TipoAsientoCreateRequestDTO tipoAsientoCreateRequestDTO) {
+        TipoAsiento tipoAsiento = modelMapper.map(tipoAsientoCreateRequestDTO, TipoAsiento.class);
         tipoAsiento.setTpaFCreate(LocalDateTime.now());
         tipoAsiento.setTpaUCreate("Piero");
-        return modelMapper.map(tipoAsientoRepository.save(tipoAsiento) , CreateResponseDTO.class);
+        return modelMapper.map(tipoAsientoRepository.save(tipoAsiento) , TipoAsientoCreateResponseDTO.class);
     }
 
-    public List<GetAllResponseDTO> getAll() {
+    public List<TipoAsientoGetAllResponseDTO> getAll() {
         List<TipoAsiento> lstTipoAsiento = tipoAsientoRepository.findAll();
-        List<GetAllResponseDTO> lstGetAllResponseDTO = lstTipoAsiento.stream()
-                .map(tipoAsiento -> modelMapper.map(tipoAsiento, GetAllResponseDTO.class))
+        List<TipoAsientoGetAllResponseDTO> lstTipoAsientoGetAllResponseDTO = lstTipoAsiento.stream()
+                .map(tipoAsiento -> modelMapper.map(tipoAsiento, TipoAsientoGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstGetAllResponseDTO;
+        return lstTipoAsientoGetAllResponseDTO;
     }
 
-    public void updateById(Long tpaId, UpdateByIdRequestDTO updateByIdRequestDTO) {
+    public void updateById(Long tpaId, TipoAsientoUpdateByIdRequestDTO tipoAsientoUpdateByIdRequestDTO) {
         Optional<TipoAsiento> findTipoAsientoById = tipoAsientoRepository.findById(tpaId);
         if (!findTipoAsientoById.isPresent()) {
             throw new ResourceNotFoundException("TipoAsiento Not Found");
         }
         TipoAsiento updateTipoAsiento = findTipoAsientoById.get();
-        updateTipoAsiento.setTpaNombre(updateByIdRequestDTO.getTpaNombre());
+        updateTipoAsiento.setTpaNombre(tipoAsientoUpdateByIdRequestDTO.getTpaNombre());
         updateTipoAsiento.setTpaFUpdate(LocalDateTime.now());
         updateTipoAsiento.setTpaUUpdate("Piero");
         tipoAsientoRepository.save(updateTipoAsiento);

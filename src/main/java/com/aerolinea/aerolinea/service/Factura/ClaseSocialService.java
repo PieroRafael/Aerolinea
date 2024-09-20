@@ -1,9 +1,9 @@
 package com.aerolinea.aerolinea.service.Factura;
 
-import com.aerolinea.aerolinea.dto.ClaseSocial.Request.CreateRequestDTO;
-import com.aerolinea.aerolinea.dto.ClaseSocial.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.ClaseSocial.Response.CreateResponseDTO;
-import com.aerolinea.aerolinea.dto.ClaseSocial.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.ClaseSocialCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.ClaseSocialUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.ClaseSocialCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.ClaseSocialGetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Factura.ClaseSocial;
 import com.aerolinea.aerolinea.persistence.repository.Factura.ClaseSocialRepository;
@@ -27,28 +27,28 @@ public class ClaseSocialService {
         this.modelMapper = modelMapper;
     }
 
-    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
-        ClaseSocial claseSocial = modelMapper.map(createRequestDTO,ClaseSocial.class);
+    public ClaseSocialCreateResponseDTO create(ClaseSocialCreateRequestDTO claseSocialCreateRequestDTO) {
+        ClaseSocial claseSocial = modelMapper.map(claseSocialCreateRequestDTO,ClaseSocial.class);
         claseSocial.setClsFCreate(LocalDateTime.now());
         claseSocial.setClsUCreate("Piero");
-        return modelMapper.map(claseSocialRepository.save(claseSocial), CreateResponseDTO.class);
+        return modelMapper.map(claseSocialRepository.save(claseSocial), ClaseSocialCreateResponseDTO.class);
     }
 
-    public List<GetAllResponseDTO> getAll() {
+    public List<ClaseSocialGetAllResponseDTO> getAll() {
         List<ClaseSocial> lstClaseSocial = claseSocialRepository.findAll();
-        List<GetAllResponseDTO> lstGetAllResponseDTO = lstClaseSocial.stream()
-                .map(claseSocial -> modelMapper.map(claseSocial, GetAllResponseDTO.class))
+        List<ClaseSocialGetAllResponseDTO> lstClaseSocialGetAllResponseDTO = lstClaseSocial.stream()
+                .map(claseSocial -> modelMapper.map(claseSocial, ClaseSocialGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstGetAllResponseDTO;
+        return lstClaseSocialGetAllResponseDTO;
     }
 
-    public void updateById(Long clsId, UpdateByIdRequestDTO updateByIdRequestDTO) {
+    public void updateById(Long clsId, ClaseSocialUpdateByIdRequestDTO claseSocialUpdateByIdRequestDTO) {
         Optional<ClaseSocial> findClaseSocialById = claseSocialRepository.findById(clsId);
         if (!findClaseSocialById.isPresent()) {
             throw new ResourceNotFoundException("ClaseSocial Not Found");
         }
         ClaseSocial updateClaseSocial = findClaseSocialById.get();
-        updateClaseSocial.setClsNombre(updateByIdRequestDTO.getClsNombre());
+        updateClaseSocial.setClsNombre(claseSocialUpdateByIdRequestDTO.getClsNombre());
         updateClaseSocial.setClsFUpdate(LocalDateTime.now());
         updateClaseSocial.setClsUUpdate("Piero");
         claseSocialRepository.save(updateClaseSocial);

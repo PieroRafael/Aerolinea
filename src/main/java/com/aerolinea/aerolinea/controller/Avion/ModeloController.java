@@ -4,14 +4,14 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.aerolinea.aerolinea.dto.Modelo.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.Modelo.Response.CreateResponseDTO;
-import com.aerolinea.aerolinea.dto.Modelo.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Request.ModeloUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Response.ModeloCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Response.ModeloGetAllResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.aerolinea.aerolinea.dto.Modelo.Request.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Modelo.Request.ModeloCreateRequestDTO;
 import com.aerolinea.aerolinea.service.Avion.ModeloService;
 
 @RestController
@@ -25,19 +25,19 @@ public class ModeloController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
-        CreateResponseDTO modelo = modeloService.create(createRequestDTO);
+    public ResponseEntity<ModeloCreateResponseDTO> create(@Valid @RequestBody ModeloCreateRequestDTO modeloCreateRequestDTO) {
+        ModeloCreateResponseDTO modelo = modeloService.create(modeloCreateRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(modelo);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+    public ResponseEntity<List<ModeloGetAllResponseDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(modeloService.getAll());
     }
 
     @PutMapping("/updateById/{modId}")
-    public ResponseEntity<Void> updateById(@PathVariable Long modId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
-        modeloService.updateById(modId, updateByIdRequestDTO);
+    public ResponseEntity<Void> updateById(@PathVariable Long modId, @Valid @RequestBody ModeloUpdateByIdRequestDTO modeloUpdateByIdRequestDTO) {
+        modeloService.updateById(modId, modeloUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

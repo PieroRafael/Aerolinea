@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.aerolinea.aerolinea.dto.Marca.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.Marca.Response.CreateResponseDTO;
-import com.aerolinea.aerolinea.dto.Marca.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Marca.Request.MarcaUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Marca.Response.MarcaCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Marca.Response.MarcaGetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.aerolinea.aerolinea.dto.Marca.Request.CreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Marca.Request.MarcaCreateRequestDTO;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Marca;
 import com.aerolinea.aerolinea.persistence.repository.Avion.MarcaRepository;
 
@@ -27,28 +27,28 @@ public class MarcaService {
         this.modelMapper = modelMapper;
     }
 
-    public CreateResponseDTO create(CreateRequestDTO createRequestDTO) {
-        Marca marca = modelMapper.map(createRequestDTO, Marca.class);
+    public MarcaCreateResponseDTO create(MarcaCreateRequestDTO marcaCreateRequestDTO) {
+        Marca marca = modelMapper.map(marcaCreateRequestDTO, Marca.class);
         marca.setMarFCreate(LocalDateTime.now());
         marca.setMarUCreate("Piero");
-        return modelMapper.map(marcaRepository.save(marca) , CreateResponseDTO.class);
+        return modelMapper.map(marcaRepository.save(marca) , MarcaCreateResponseDTO.class);
     }
 
-    public List<GetAllResponseDTO> getAll() {
+    public List<MarcaGetAllResponseDTO> getAll() {
         List<Marca> lstMarca = marcaRepository.findAll();
-        List<GetAllResponseDTO> lstGetAllResponseDTO = lstMarca.stream()
-                .map(marca -> modelMapper.map(marca , GetAllResponseDTO.class))
+        List<MarcaGetAllResponseDTO> lstMarcaGetAllResponseDTO = lstMarca.stream()
+                .map(marca -> modelMapper.map(marca , MarcaGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstGetAllResponseDTO;
+        return lstMarcaGetAllResponseDTO;
     }
 
-    public void updateById(Long marId, UpdateByIdRequestDTO updateByIdRequestDTO) {
+    public void updateById(Long marId, MarcaUpdateByIdRequestDTO marcaUpdateByIdRequestDTO) {
         Optional<Marca> findMarcaById = marcaRepository.findById(marId);
         if (!findMarcaById.isPresent()) {
             throw new ResourceNotFoundException("Marca Not Found");
         }
         Marca updateMarca = findMarcaById.get();
-        updateMarca.setMarNombre(updateByIdRequestDTO.getMarNombre());
+        updateMarca.setMarNombre(marcaUpdateByIdRequestDTO.getMarNombre());
         updateMarca.setMarFUpdate(LocalDateTime.now());
         updateMarca.setMarUUpdate("Piero");
         marcaRepository.save(updateMarca);

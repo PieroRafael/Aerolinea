@@ -1,7 +1,9 @@
 package com.aerolinea.aerolinea.service.Factura;
 
-import com.aerolinea.aerolinea.dto.Factura.FacturaSaveDTO;
-import com.aerolinea.aerolinea.dto.Factura.FacturaListDTO;
+import com.aerolinea.aerolinea.dto.Factura.Request.FacturaCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Factura.Request.FacturaUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Factura.Response.FacturaGetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Factura.Response.FacturaCreateResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Factura.Factura;
 import com.aerolinea.aerolinea.persistence.repository.Factura.FacturaRepository;
@@ -26,31 +28,31 @@ public class FacturaService {
         this.modelMapper = modelMapper;
     }
 
-    public FacturaSaveDTO create(FacturaSaveDTO facturaDTO) {
-        Factura factura = modelMapper.map(facturaDTO,Factura.class);
+    public FacturaCreateResponseDTO create(FacturaCreateRequestDTO facturaCreateRequestDTO) {
+        Factura factura = modelMapper.map(facturaCreateRequestDTO,Factura.class);
         factura.setFacFCreate(LocalDateTime.now());
         factura.setFacUCreate("Piero");
         factura.setFacCod(String.valueOf(UUID.randomUUID()));
-        return modelMapper.map(facturaRepository.save(factura), FacturaSaveDTO.class);
+        return modelMapper.map(facturaRepository.save(factura), FacturaCreateResponseDTO.class);
     }
 
-    public List<FacturaListDTO> getAll() {
+    public List<FacturaGetAllResponseDTO> getAll() {
         List<Factura> lstFactura = facturaRepository.findAll();
-        List<FacturaListDTO> lstFacturaDTO = lstFactura.stream()
-                .map(factura -> modelMapper.map(factura,FacturaListDTO.class))
+        List<FacturaGetAllResponseDTO> lstFacturaDTO = lstFactura.stream()
+                .map(factura -> modelMapper.map(factura, FacturaGetAllResponseDTO.class))
                 .collect(Collectors.toList());
         return lstFacturaDTO;
     }
 
-    public void updateById(Long facId, FacturaSaveDTO facturaDTO) {
+    public void updateById(Long facId, FacturaUpdateByIdRequestDTO facturaUpdateByIdRequestDTO) {
         Optional<Factura> findFacturaById = facturaRepository.findById(facId);
         if (!findFacturaById.isPresent()) {
             throw new ResourceNotFoundException("Factura Not Found");
         }
         Factura updateFactura = findFacturaById.get();
-        updateFactura.setFacCostoTotal(facturaDTO.getFacCostoTotal());
-        updateFactura.setFacTotalImpuesto(facturaDTO.getFacTotalImpuesto());
-        updateFactura.setFacFecha(facturaDTO.getFacFecha());
+        updateFactura.setFacCostoTotal(facturaUpdateByIdRequestDTO.getFacCostoTotal());
+        updateFactura.setFacTotalImpuesto(facturaUpdateByIdRequestDTO.getFacTotalImpuesto());
+        updateFactura.setFacFecha(facturaUpdateByIdRequestDTO.getFacFecha());
         updateFactura.setFacFUpdate(LocalDateTime.now());
         updateFactura.setFacUUpdate("Piero");
         facturaRepository.save(updateFactura);

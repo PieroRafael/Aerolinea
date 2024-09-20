@@ -1,9 +1,9 @@
 package com.aerolinea.aerolinea.controller.Avion;
 
-import com.aerolinea.aerolinea.dto.Asiento.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.Asiento.Response.GetAllResponseDTO;
-import com.aerolinea.aerolinea.dto.Asiento.Request.CreateRequestDTO;
-import com.aerolinea.aerolinea.dto.Asiento.Response.CreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Request.AsientoUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Response.AsientoGetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Request.AsientoCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Asiento.Response.AsientoCreateResponseDTO;
 import com.aerolinea.aerolinea.service.Avion.AsientoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,20 +23,20 @@ public class AsientoController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
-        CreateResponseDTO asiento = asientoService.create(createRequestDTO);
+    public ResponseEntity<AsientoCreateResponseDTO> create(@Valid @RequestBody AsientoCreateRequestDTO asientoCreateRequestDTO) {
+        AsientoCreateResponseDTO asiento = asientoService.create(asientoCreateRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(asiento);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+    public ResponseEntity<List<AsientoGetAllResponseDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(asientoService.getAll());
     }
 
     @PutMapping("/updateById/{astId}")
-    public ResponseEntity<Void> updateById(@PathVariable Long astId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
-        asientoService.updateById(astId, updateByIdRequestDTO);
+    public ResponseEntity<Void> updateById(@PathVariable Long astId, @Valid @RequestBody AsientoUpdateByIdRequestDTO asientoUpdateByIdRequestDTO) {
+        asientoService.updateById(astId, asientoUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -59,12 +59,12 @@ public class AsientoController {
     }
 
     @GetMapping("/getAllDeactivate")
-    public ResponseEntity<List<GetAllResponseDTO>> getAllDeactivate() {
+    public ResponseEntity<List<AsientoGetAllResponseDTO>> getAllDeactivate() {
         return ResponseEntity.status(HttpStatus.OK).body(asientoService.getAllDeactivate());
     }
 
     @GetMapping("/getAllActivated")
-    public ResponseEntity<List<GetAllResponseDTO>> getAllActivated() {
+    public ResponseEntity<List<AsientoGetAllResponseDTO>> getAllActivated() {
         return ResponseEntity.status(HttpStatus.OK).body(asientoService.getAllActivated());
     }
 

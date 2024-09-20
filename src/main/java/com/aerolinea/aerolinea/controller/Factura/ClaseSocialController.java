@@ -1,9 +1,9 @@
 package com.aerolinea.aerolinea.controller.Factura;
 
-import com.aerolinea.aerolinea.dto.ClaseSocial.Request.CreateRequestDTO;
-import com.aerolinea.aerolinea.dto.ClaseSocial.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.ClaseSocial.Response.CreateResponseDTO;
-import com.aerolinea.aerolinea.dto.ClaseSocial.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.ClaseSocialCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Request.ClaseSocialUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.ClaseSocialCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.ClaseSocial.Response.ClaseSocialGetAllResponseDTO;
 import com.aerolinea.aerolinea.service.Factura.ClaseSocialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +23,19 @@ public class ClaseSocialController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO createRequestDTO) {
-        CreateResponseDTO claseSocial = claseSocialService.create(createRequestDTO);
+    public ResponseEntity<ClaseSocialCreateResponseDTO> create(@Valid @RequestBody ClaseSocialCreateRequestDTO claseSocialCreateRequestDTO) {
+        ClaseSocialCreateResponseDTO claseSocial = claseSocialService.create(claseSocialCreateRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(claseSocial);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+    public ResponseEntity<List<ClaseSocialGetAllResponseDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(claseSocialService.getAll());
     }
 
     @PutMapping("/updateById/{clsId}")
-    public ResponseEntity<Void> updateById(@PathVariable Long clsId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
-        claseSocialService.updateById(clsId, updateByIdRequestDTO);
+    public ResponseEntity<Void> updateById(@PathVariable Long clsId, @Valid @RequestBody ClaseSocialUpdateByIdRequestDTO claseSocialUpdateByIdRequestDTO) {
+        claseSocialService.updateById(clsId, claseSocialUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

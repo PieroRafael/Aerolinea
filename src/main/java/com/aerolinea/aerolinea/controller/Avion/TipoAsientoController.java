@@ -1,9 +1,9 @@
 package com.aerolinea.aerolinea.controller.Avion;
 
-import com.aerolinea.aerolinea.dto.TipoAsiento.Request.CreateRequestDTO;
-import com.aerolinea.aerolinea.dto.TipoAsiento.Request.UpdateByIdRequestDTO;
-import com.aerolinea.aerolinea.dto.TipoAsiento.Response.CreateResponseDTO;
-import com.aerolinea.aerolinea.dto.TipoAsiento.Response.GetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Request.TipoAsientoCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Request.TipoAsientoUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Response.TipoAsientoCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.TipoAsiento.Response.TipoAsientoGetAllResponseDTO;
 import com.aerolinea.aerolinea.service.Avion.TipoAsientoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +23,19 @@ public class TipoAsientoController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateResponseDTO> create(@Valid @RequestBody CreateRequestDTO tipoAsientoDTO){
-        CreateResponseDTO tipoAsiento = tipoAsientoService.create(tipoAsientoDTO);
+    public ResponseEntity<TipoAsientoCreateResponseDTO> create(@Valid @RequestBody TipoAsientoCreateRequestDTO tipoAsientoDTO){
+        TipoAsientoCreateResponseDTO tipoAsiento = tipoAsientoService.create(tipoAsientoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(tipoAsiento);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<GetAllResponseDTO>> getAll() {
+    public ResponseEntity<List<TipoAsientoGetAllResponseDTO>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(tipoAsientoService.getAll());
     }
 
     @PutMapping("/updateById/{tpaId}")
-    public ResponseEntity<Void> updateById(@PathVariable Long tpaId, @Valid @RequestBody UpdateByIdRequestDTO updateByIdRequestDTO) {
-        tipoAsientoService.updateById(tpaId, updateByIdRequestDTO);
+    public ResponseEntity<Void> updateById(@PathVariable Long tpaId, @Valid @RequestBody TipoAsientoUpdateByIdRequestDTO tipoAsientoUpdateByIdRequestDTO) {
+        tipoAsientoService.updateById(tpaId, tipoAsientoUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

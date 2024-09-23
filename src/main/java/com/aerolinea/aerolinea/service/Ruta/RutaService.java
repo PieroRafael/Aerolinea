@@ -1,6 +1,9 @@
 package com.aerolinea.aerolinea.service.Ruta;
 
-import com.aerolinea.aerolinea.dto.Ruta.RutaDTO;
+import com.aerolinea.aerolinea.dto.Ruta.Request.RutaCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Ruta.Request.RutaUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Ruta.Response.RutaCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Ruta.Response.RutaGetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.Ruta;
 import com.aerolinea.aerolinea.persistence.repository.Ruta.RutaRepository;
@@ -24,29 +27,29 @@ public class RutaService {
         this.modelMapper = modelMapper;
     }
 
-    public RutaDTO create(RutaDTO rutaDTO) {
-        Ruta ruta = modelMapper.map(rutaDTO , Ruta.class);
+    public RutaCreateResponseDTO create(RutaCreateRequestDTO rutaCreateRequestDTO) {
+        Ruta ruta = modelMapper.map(rutaCreateRequestDTO, Ruta.class);
         ruta.setRtaFCreate(LocalDateTime.now());
         ruta.setRtaUCreate("Piero");
-        return modelMapper.map(rutaRepository.save(ruta) , RutaDTO.class);
+        return modelMapper.map(rutaRepository.save(ruta) , RutaCreateResponseDTO.class);
     }
 
-    public List<RutaDTO> getAll() {
+    public List<RutaGetAllResponseDTO> getAll() {
         List<Ruta> lstRuta = rutaRepository.findAll();
-        List<RutaDTO> lstRutaDTO = lstRuta.stream()
-                .map(ruta -> modelMapper.map(ruta,RutaDTO.class))
+        List<RutaGetAllResponseDTO> lstRutaGetAllResponseDTO = lstRuta.stream()
+                .map(ruta -> modelMapper.map(ruta, RutaGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstRutaDTO;
+        return lstRutaGetAllResponseDTO;
     }
 
-    public void updateById(Long rtaId, RutaDTO rutaDTO) {
+    public void updateById(Long rtaId, RutaUpdateByIdRequestDTO rutaUpdateByIdRequestDTO) {
         Optional<Ruta> findRutaById = rutaRepository.findById(rtaId);
         if (!findRutaById.isPresent()) {
             throw new ResourceNotFoundException("Ruta Not Found");
         }
         Ruta updateRuta = findRutaById.get();
-        updateRuta.setRtaNombre(rutaDTO.getRtaNombre());
-        updateRuta.setRtaPromedioMinutos(rutaDTO.getRtaPromedioMinutos());
+        updateRuta.setRtaNombre(rutaUpdateByIdRequestDTO.getRtaNombre());
+        updateRuta.setRtaPromedioMinutos(rutaUpdateByIdRequestDTO.getRtaPromedioMinutos());
         updateRuta.setRtaFUpdate(LocalDateTime.now());
         updateRuta.setRtaUUpdate("Piero");
         rutaRepository.save(updateRuta);

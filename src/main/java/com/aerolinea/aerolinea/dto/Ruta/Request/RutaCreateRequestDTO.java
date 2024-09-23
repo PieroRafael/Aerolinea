@@ -1,15 +1,12 @@
-package com.aerolinea.aerolinea.dto.Ruta;
+package com.aerolinea.aerolinea.dto.Ruta.Request;
 
 import com.aerolinea.aerolinea.payload.Ruta.UniqueRtaNombre;
 import lombok.Data;
 
 import javax.validation.constraints.*;
-import java.io.Serializable;
 
 @Data
-public class RutaDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class RutaCreateRequestDTO {
 
     @NotNull
     @NotBlank

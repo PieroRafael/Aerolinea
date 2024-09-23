@@ -1,6 +1,9 @@
 package com.aerolinea.aerolinea.controller.Ruta;
 
-import com.aerolinea.aerolinea.dto.PuntoEscala.PuntoEscalaDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Request.PuntoEscalaCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Request.PuntoEscalaUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Response.PuntoEscalaCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Response.PuntoEscalaGetAllResponseDTO;
 import com.aerolinea.aerolinea.service.Ruta.PuntoEscalaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/PuntoEscala")
+@RequestMapping("/puntoEscala")
 public class PuntoEscalaController {
 
     private final PuntoEscalaService puntoEscalaService;
@@ -19,28 +22,25 @@ public class PuntoEscalaController {
         this.puntoEscalaService = puntoEscalaService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<PuntoEscalaDTO> Create(@Valid @RequestBody PuntoEscalaDTO puntoEscalaDTO){
-        PuntoEscalaDTO puntoEscala = puntoEscalaService.create(puntoEscalaDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "PuntoEscala creado correctamente")
-                .body(puntoEscala);
+    @PostMapping("/create")
+    public ResponseEntity<PuntoEscalaCreateResponseDTO> create(@Valid @RequestBody PuntoEscalaCreateRequestDTO puntoEscalaCreateRequestDTO){
+        PuntoEscalaCreateResponseDTO puntoEscala = puntoEscalaService.create(puntoEscalaCreateRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(puntoEscala);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<PuntoEscalaDTO>> GetAll() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(puntoEscalaService.getAll());
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PuntoEscalaGetAllResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(puntoEscalaService.getAll());
     }
 
-    @PutMapping("/UpdateById/{pesId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long pesId, @Valid @RequestBody PuntoEscalaDTO puntoEscalaDTO) {
-        puntoEscalaService.updateById(pesId, puntoEscalaDTO);
+    @PutMapping("/updateById/{pesId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long pesId, @Valid @RequestBody PuntoEscalaUpdateByIdRequestDTO puntoEscalaUpdateByIdRequestDTO) {
+        puntoEscalaService.updateById(pesId, puntoEscalaUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{pesId}")
-    public ResponseEntity<Void> DeleteById(@PathVariable Long pesId) {
+    @DeleteMapping("/deleteById/{pesId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long pesId) {
         puntoEscalaService.deleteById(pesId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

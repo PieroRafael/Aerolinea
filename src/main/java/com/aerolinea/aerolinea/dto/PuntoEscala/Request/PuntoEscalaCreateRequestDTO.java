@@ -1,16 +1,13 @@
-package com.aerolinea.aerolinea.dto.PuntoEscala;
+package com.aerolinea.aerolinea.dto.PuntoEscala.Request;
 
 import com.aerolinea.aerolinea.payload.PuntoEscala.UniquePesNombrePunto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Data
-public class PuntoEscalaDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class PuntoEscalaCreateRequestDTO {
 
     @NotNull
     @NotBlank

@@ -1,6 +1,9 @@
 package com.aerolinea.aerolinea.service.Ruta;
 
-import com.aerolinea.aerolinea.dto.PuntoEscala.PuntoEscalaDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Request.PuntoEscalaCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Request.PuntoEscalaUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Response.PuntoEscalaCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.PuntoEscala.Response.PuntoEscalaGetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.PuntoEscala;
 import com.aerolinea.aerolinea.persistence.repository.Ruta.PuntoEscalaRepository;
@@ -24,30 +27,30 @@ public class PuntoEscalaService {
         this.modelMapper = modelMapper;
     }
 
-    public PuntoEscalaDTO create(PuntoEscalaDTO puntoEscalaDTO) {
-        PuntoEscala puntoEscala = modelMapper.map(puntoEscalaDTO , PuntoEscala.class);
+    public PuntoEscalaCreateResponseDTO create(PuntoEscalaCreateRequestDTO puntoEscalaCreateRequestDTO) {
+        PuntoEscala puntoEscala = modelMapper.map(puntoEscalaCreateRequestDTO, PuntoEscala.class);
         puntoEscala.setPesFCreate(LocalDateTime.now());
         puntoEscala.setPesUCreate("Piero");
-        return modelMapper.map(puntoEscalaRepository.save(puntoEscala) , PuntoEscalaDTO.class);
+        return modelMapper.map(puntoEscalaRepository.save(puntoEscala) , PuntoEscalaCreateResponseDTO.class);
     }
 
-    public List<PuntoEscalaDTO> getAll() {
+    public List<PuntoEscalaGetAllResponseDTO> getAll() {
         List<PuntoEscala> lstPuntoEscala = puntoEscalaRepository.findAll();
-        List<PuntoEscalaDTO> lstPuntoEscalaDTO = lstPuntoEscala.stream()
-                .map(puntoEscala -> modelMapper.map(puntoEscala,PuntoEscalaDTO.class))
+        List<PuntoEscalaGetAllResponseDTO> lstPuntoEscalaGetAllResponseDTO = lstPuntoEscala.stream()
+                .map(puntoEscala -> modelMapper.map(puntoEscala, PuntoEscalaGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstPuntoEscalaDTO;
+        return lstPuntoEscalaGetAllResponseDTO;
     }
 
-    public void updateById(Long pesId, PuntoEscalaDTO puntoEscalaDTO) {
+    public void updateById(Long pesId, PuntoEscalaUpdateByIdRequestDTO puntoEscalaUpdateByIdRequestDTO) {
         Optional<PuntoEscala> findPuntoEscalaById = puntoEscalaRepository.findById(pesId);
         if (!findPuntoEscalaById.isPresent()) {
             throw new ResourceNotFoundException("PuntoEscala Not Found");
         }
         PuntoEscala updatePuntoEscala = findPuntoEscalaById.get();
-        updatePuntoEscala.setPesNombrePunto(puntoEscalaDTO.getPesNombrePunto());
-        updatePuntoEscala.setPesLatitud(puntoEscalaDTO.getPesLatitud());
-        updatePuntoEscala.setPesLongitud(puntoEscalaDTO.getPesLongitud());
+        updatePuntoEscala.setPesNombrePunto(puntoEscalaUpdateByIdRequestDTO.getPesNombrePunto());
+        updatePuntoEscala.setPesLatitud(puntoEscalaUpdateByIdRequestDTO.getPesLatitud());
+        updatePuntoEscala.setPesLongitud(puntoEscalaUpdateByIdRequestDTO.getPesLongitud());
         updatePuntoEscala.setPesFUpdate(LocalDateTime.now());
         updatePuntoEscala.setPesUUpdate("Piero");
         puntoEscalaRepository.save(updatePuntoEscala);

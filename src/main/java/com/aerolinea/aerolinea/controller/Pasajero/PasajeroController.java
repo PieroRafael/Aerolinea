@@ -1,6 +1,9 @@
 package com.aerolinea.aerolinea.controller.Pasajero;
 
-import com.aerolinea.aerolinea.dto.Pasajero.PasajeroDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Request.PasajeroCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Request.PasajeroUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Response.PasajeroCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Response.PasajeroGetAllResponseDTO;
 import com.aerolinea.aerolinea.service.Pasajero.PasajeroService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Pasajero")
+@RequestMapping("/pasajero")
 public class PasajeroController {
 
     private final PasajeroService pasajeroService;
@@ -19,28 +22,25 @@ public class PasajeroController {
         this.pasajeroService = pasajeroService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<PasajeroDTO> Create(@Valid @RequestBody PasajeroDTO pasajeroDTO) {
-        PasajeroDTO pasajero = pasajeroService.create(pasajeroDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "Pasajero creado correctamente")
-                .body(pasajero);
+    @PostMapping("/create")
+    public ResponseEntity<PasajeroCreateResponseDTO> create(@Valid @RequestBody PasajeroCreateRequestDTO pasajeroCreateRequestDTO) {
+        PasajeroCreateResponseDTO pasajero = pasajeroService.create(pasajeroCreateRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pasajero);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<PasajeroDTO>> GetAll() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(pasajeroService.getAll());
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PasajeroGetAllResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(pasajeroService.getAll());
     }
 
-    @PutMapping("/UpdateById/{pasId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long pasId, @Valid @RequestBody PasajeroDTO pasajeroDTO) {
-        pasajeroService.updateById(pasId, pasajeroDTO);
+    @PutMapping("/updateById/{pasId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long pasId, @Valid @RequestBody PasajeroUpdateByIdRequestDTO pasajeroUpdateByIdRequestDTO) {
+        pasajeroService.updateById(pasId, pasajeroUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{pasId}")
-    public ResponseEntity<Void> DeleteById(@PathVariable Long pasId) {
+    @DeleteMapping("/deleteById/{pasId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long pasId) {
         pasajeroService.deleteById(pasId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

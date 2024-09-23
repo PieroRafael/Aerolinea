@@ -1,6 +1,9 @@
 package com.aerolinea.aerolinea.service.Pasajero;
 
-import com.aerolinea.aerolinea.dto.Pasajero.PasajeroDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Request.PasajeroCreateRequestDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Request.PasajeroUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Response.PasajeroCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Pasajero.Response.PasajeroGetAllResponseDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Pasajero.Genero;
 import com.aerolinea.aerolinea.persistence.entity.Pasajero.Pasajero;
@@ -25,32 +28,32 @@ public class PasajeroService {
         this.modelMapper = modelMapper;
     }
 
-    public PasajeroDTO create(PasajeroDTO pasajeroDTO) {
-        Pasajero pasajero = modelMapper.map(pasajeroDTO,Pasajero.class);
-        pasajero.setPasGenero(Genero.valueOf(pasajeroDTO.getPasGenero().toUpperCase()));
+    public PasajeroCreateResponseDTO create(PasajeroCreateRequestDTO pasajeroCreateRequestDTO) {
+        Pasajero pasajero = modelMapper.map(pasajeroCreateRequestDTO,Pasajero.class);
+        pasajero.setPasGenero(Genero.valueOf(pasajeroCreateRequestDTO.getPasGenero().toUpperCase()));
         pasajero.setPasFCreate(LocalDateTime.now());
         pasajero.setPasUCreate("Piero");
-        return modelMapper.map(pasajeroRepository.save(pasajero),PasajeroDTO.class);
+        return modelMapper.map(pasajeroRepository.save(pasajero), PasajeroCreateResponseDTO.class);
     }
 
-    public List<PasajeroDTO> getAll() {
+    public List<PasajeroGetAllResponseDTO> getAll() {
         List<Pasajero> lstPasajero = pasajeroRepository.findAll();
-        List<PasajeroDTO> lstPasajeroDTO = lstPasajero.stream()
-                .map(pasajero -> modelMapper.map(pasajero,PasajeroDTO.class))
+        List<PasajeroGetAllResponseDTO> lstPasajeroGetAllResponseDTO = lstPasajero.stream()
+                .map(pasajero -> modelMapper.map(pasajero, PasajeroGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstPasajeroDTO;
+        return lstPasajeroGetAllResponseDTO;
     }
 
-    public void updateById(Long pasId, PasajeroDTO pasajeroDTO) {
+    public void updateById(Long pasId, PasajeroUpdateByIdRequestDTO pasajeroUpdateByIdRequestDTO) {
         Optional<Pasajero> findPasajeroById = pasajeroRepository.findById(pasId);
         if (!findPasajeroById.isPresent()) {
             throw new ResourceNotFoundException("Pasajero Not Found");
         }
         Pasajero updatePasajero = findPasajeroById.get();
-        updatePasajero.setPasNombre(pasajeroDTO.getPasNombre());
-        updatePasajero.setPasApellido(pasajeroDTO.getPasApellido());
-        updatePasajero.setPasEdad(pasajeroDTO.getPasEdad());
-        updatePasajero.setPasGenero(Genero.valueOf(pasajeroDTO.getPasGenero().toUpperCase()));
+        updatePasajero.setPasNombre(pasajeroUpdateByIdRequestDTO.getPasNombre());
+        updatePasajero.setPasApellido(pasajeroUpdateByIdRequestDTO.getPasApellido());
+        updatePasajero.setPasEdad(pasajeroUpdateByIdRequestDTO.getPasEdad());
+        updatePasajero.setPasGenero(Genero.valueOf(pasajeroUpdateByIdRequestDTO.getPasGenero().toUpperCase()));
         updatePasajero.setPasFUpdate(LocalDateTime.now());
         updatePasajero.setPasUUpdate("Piero");
         pasajeroRepository.save(updatePasajero);

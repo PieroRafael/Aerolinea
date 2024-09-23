@@ -1,16 +1,13 @@
-package com.aerolinea.aerolinea.dto.Pasajero;
+package com.aerolinea.aerolinea.dto.Pasajero.Request;
 
 import com.aerolinea.aerolinea.payload.Pasajero.UniquePasApellido;
 import com.aerolinea.aerolinea.payload.Pasajero.UniquePasNombre;
 import lombok.Data;
 
 import javax.validation.constraints.*;
-import java.io.Serializable;
 
 @Data
-public class PasajeroDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class PasajeroCreateRequestDTO {
 
     @NotNull
     @NotBlank

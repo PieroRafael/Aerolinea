@@ -1,6 +1,6 @@
 package com.aerolinea.aerolinea.payload.PuntoRuta;
 
-import com.aerolinea.aerolinea.dto.PuntoRuta.PuntoRutaSaveDTO;
+import com.aerolinea.aerolinea.dto.PuntoRuta.Request.PuntoRutaCreateRequestDTO;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.PuntoEscala;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.Ruta;
 import com.aerolinea.aerolinea.persistence.repository.Ruta.PuntoRutaRepository;
@@ -23,12 +23,12 @@ public class ValidatorExistAssignRutaAndPuntoEscala implements ConstraintValidat
     public boolean isValid(Object[] objects, ConstraintValidatorContext constraintValidatorContext) {
         Long rtaId;
         Long pesId;
-        PuntoRutaSaveDTO puntoRutaSaveDTO = null;
-        if(objects[0] instanceof PuntoRutaSaveDTO){
-            puntoRutaSaveDTO = (PuntoRutaSaveDTO) objects[0];
+        PuntoRutaCreateRequestDTO puntoRutaCreateRequestDTO = null;
+        if(objects[0] instanceof PuntoRutaCreateRequestDTO){
+            puntoRutaCreateRequestDTO = (PuntoRutaCreateRequestDTO) objects[0];
         }
-        rtaId = puntoRutaSaveDTO.getRtaId();
-        pesId = puntoRutaSaveDTO.getPesId();
+        rtaId = puntoRutaCreateRequestDTO.getRtaId();
+        pesId = puntoRutaCreateRequestDTO.getPesId();
         var rx = puntoRutaRepository.findByRutaAndPuntoEscala(
                 Ruta.builder().rtaId(rtaId).build(),PuntoEscala.builder().pesId(pesId).build()
         );

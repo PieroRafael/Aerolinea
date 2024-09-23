@@ -1,13 +1,9 @@
-package com.aerolinea.aerolinea.dto.PuntoRuta;
+package com.aerolinea.aerolinea.dto.PuntoRuta.Response;
 
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class PuntoRutaListDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class PuntoRutaGetAllResponseDTO {
 
     // Punto Ruta
 

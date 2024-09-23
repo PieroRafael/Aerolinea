@@ -1,4 +1,4 @@
-package com.aerolinea.aerolinea.dto.PuntoRuta;
+package com.aerolinea.aerolinea.dto.PuntoRuta.Request;
 
 import com.aerolinea.aerolinea.payload.PuntoEscala.ExistFkPuntoEscala;
 import com.aerolinea.aerolinea.payload.PuntoRuta.UniquePtrOrden;
@@ -7,12 +7,9 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Data
-public class PuntoRutaSaveDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class PuntoRutaCreateRequestDTO {
 
     @NotNull
     @NotBlank

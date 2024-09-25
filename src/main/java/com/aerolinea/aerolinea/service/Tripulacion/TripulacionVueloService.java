@@ -1,7 +1,9 @@
 package com.aerolinea.aerolinea.service.Tripulacion;
 
-import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloListDTO;
-import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloSaveDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Request.TripulacionVueloUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Response.TripulacionVueloCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Response.TripulacionVueloGetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Request.TripulacionVueloCreateRequestDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.Tripulacion;
 import com.aerolinea.aerolinea.persistence.entity.Tripulacion.TripulacionVuelo;
@@ -27,29 +29,29 @@ public class TripulacionVueloService {
         this.modelMapper = modelMapper;
     }
 
-    public TripulacionVueloSaveDTO create(TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
-        TripulacionVuelo tripulacionVuelo= modelMapper.map(tripulacionVueloSaveDTO, TripulacionVuelo.class);
+    public TripulacionVueloCreateResponseDTO create(TripulacionVueloCreateRequestDTO tripulacionVueloCreateRequestDTO) {
+        TripulacionVuelo tripulacionVuelo= modelMapper.map(tripulacionVueloCreateRequestDTO, TripulacionVuelo.class);
         tripulacionVuelo.setTvuFCreate(LocalDateTime.now());
         tripulacionVuelo.setTvuUCreate("Piero");
-        return modelMapper.map(tripulacionVueloRepository.save(tripulacionVuelo),TripulacionVueloSaveDTO.class);
+        return modelMapper.map(tripulacionVueloRepository.save(tripulacionVuelo), TripulacionVueloCreateResponseDTO.class);
     }
 
-    public List<TripulacionVueloListDTO> getAll() {
+    public List<TripulacionVueloGetAllResponseDTO> getAll() {
         List<TripulacionVuelo> lstTripulacionVuelo = tripulacionVueloRepository.findAll();
-        List<TripulacionVueloListDTO> lstTripulacionVueloDTO = lstTripulacionVuelo.stream()
-                .map(tripulacionVuelo -> modelMapper.map(tripulacionVuelo,TripulacionVueloListDTO.class))
+        List<TripulacionVueloGetAllResponseDTO> lstTripulacionVueloGetAllResponseDTO = lstTripulacionVuelo.stream()
+                .map(tripulacionVuelo -> modelMapper.map(tripulacionVuelo, TripulacionVueloGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstTripulacionVueloDTO;
+        return lstTripulacionVueloGetAllResponseDTO;
     }
 
-    public void updateById(Long tvuId, TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
+    public void updateById(Long tvuId, TripulacionVueloUpdateByIdRequestDTO tripulacionVueloUpdateByIdRequestDTO) {
         Optional<TripulacionVuelo> findTripulacionVueloById = tripulacionVueloRepository.findById(tvuId);
         if (!findTripulacionVueloById.isPresent()) {
             throw new ResourceNotFoundException("TripulacionVuelo Not Found");
         }
         TripulacionVuelo updateTripulacionVuelo = findTripulacionVueloById.get();
-        updateTripulacionVuelo.setVuelo(Vuelo.builder().vueId(tripulacionVueloSaveDTO.getVueId()).build());
-        updateTripulacionVuelo.setTripulacion(Tripulacion.builder().triId(tripulacionVueloSaveDTO.getTriId()).build());
+        updateTripulacionVuelo.setVuelo(Vuelo.builder().vueId(tripulacionVueloUpdateByIdRequestDTO.getVueId()).build());
+        updateTripulacionVuelo.setTripulacion(Tripulacion.builder().triId(tripulacionVueloUpdateByIdRequestDTO.getTriId()).build());
         updateTripulacionVuelo.setTvuFUpdate(LocalDateTime.now());
         updateTripulacionVuelo.setTvuUUpdate("Piero");
         tripulacionVueloRepository.save(updateTripulacionVuelo);

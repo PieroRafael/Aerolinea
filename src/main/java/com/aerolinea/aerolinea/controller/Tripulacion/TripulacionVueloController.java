@@ -1,7 +1,9 @@
 package com.aerolinea.aerolinea.controller.Tripulacion;
 
-import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloListDTO;
-import com.aerolinea.aerolinea.dto.TripulacionVuelo.TripulacionVueloSaveDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Request.TripulacionVueloUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Response.TripulacionVueloCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Response.TripulacionVueloGetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.TripulacionVuelo.Request.TripulacionVueloCreateRequestDTO;
 import com.aerolinea.aerolinea.service.Tripulacion.TripulacionVueloService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/TripulacionVuelo")
+@RequestMapping("/tripulacionVuelo")
 public class TripulacionVueloController {
 
     private final TripulacionVueloService tripulacionVueloService;
@@ -20,28 +22,25 @@ public class TripulacionVueloController {
         this.tripulacionVueloService = tripulacionVueloService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<TripulacionVueloSaveDTO> Create(@Valid @RequestBody TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
-        TripulacionVueloSaveDTO tripulacionVuelo = tripulacionVueloService.create(tripulacionVueloSaveDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "TripulacionVuelo creado correctamente")
-                .body(tripulacionVuelo);
+    @PostMapping("/create")
+    public ResponseEntity<TripulacionVueloCreateResponseDTO> create(@Valid @RequestBody TripulacionVueloCreateRequestDTO tripulacionVueloCreateRequestDTO) {
+        TripulacionVueloCreateResponseDTO tripulacionVuelo = tripulacionVueloService.create(tripulacionVueloCreateRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tripulacionVuelo);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<TripulacionVueloListDTO>> GetAll() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(tripulacionVueloService.getAll());
+    @GetMapping("/getAll")
+    public ResponseEntity<List<TripulacionVueloGetAllResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(tripulacionVueloService.getAll());
     }
 
-    @PutMapping("/UpdateById/{tvuId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long tvuId, @Valid @RequestBody TripulacionVueloSaveDTO tripulacionVueloSaveDTO) {
-        tripulacionVueloService.updateById(tvuId, tripulacionVueloSaveDTO);
+    @PutMapping("/updateById/{tvuId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long tvuId, @Valid @RequestBody TripulacionVueloUpdateByIdRequestDTO tripulacionVueloUpdateByIdRequestDTO) {
+        tripulacionVueloService.updateById(tvuId, tripulacionVueloUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{tvuId}")
-    public ResponseEntity<Void> DeleteById(@PathVariable Long tvuId) {
+    @DeleteMapping("/deleteById/{tvuId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long tvuId) {
         tripulacionVueloService.deleteById(tvuId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

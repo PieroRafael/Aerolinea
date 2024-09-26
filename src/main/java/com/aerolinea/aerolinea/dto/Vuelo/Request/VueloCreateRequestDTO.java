@@ -1,17 +1,14 @@
-package com.aerolinea.aerolinea.dto.Vuelo;
+package com.aerolinea.aerolinea.dto.Vuelo.Request;
 
 import com.aerolinea.aerolinea.payload.Asiento.ExistFKAvion;
 import com.aerolinea.aerolinea.payload.Ruta.ExistFKRuta;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Data
-public class VueloSaveDTO implements Serializable{
-
-    private static final long serialVersionUID = 1L;
+public class VueloCreateRequestDTO {
 
     @NotNull
     private ZonedDateTime vueFHPartida;

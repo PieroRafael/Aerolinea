@@ -1,7 +1,9 @@
 package com.aerolinea.aerolinea.service.Vuelo;
 
-import com.aerolinea.aerolinea.dto.Vuelo.VueloListDTO;
-import com.aerolinea.aerolinea.dto.Vuelo.VueloSaveDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Request.VueloUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Response.VueloCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Response.VueloGetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Request.VueloCreateRequestDTO;
 import com.aerolinea.aerolinea.exception.custom.ResourceNotFoundException;
 import com.aerolinea.aerolinea.persistence.entity.Avion.Avion;
 import com.aerolinea.aerolinea.persistence.entity.Ruta.Ruta;
@@ -28,32 +30,32 @@ public class VueloService {
         this.modelMapper = modelMapper;
     }
 
-    public VueloSaveDTO create(VueloSaveDTO vueloSaveDTO) {
-        Vuelo vuelo = modelMapper.map(vueloSaveDTO, Vuelo.class);
+    public VueloCreateResponseDTO create(VueloCreateRequestDTO vueloCreateRequestDTO) {
+        Vuelo vuelo = modelMapper.map(vueloCreateRequestDTO, Vuelo.class);
         vuelo.setVueFCreate(LocalDateTime.now());
         vuelo.setVueUCreate("Piero");
         vuelo.setVueCod(String.valueOf(UUID.randomUUID()));
-        return modelMapper.map(vueloRepository.save(vuelo),VueloSaveDTO.class);
+        return modelMapper.map(vueloRepository.save(vuelo), VueloCreateResponseDTO.class);
     }
 
-    public List<VueloListDTO> getAll() {
+    public List<VueloGetAllResponseDTO> getAll() {
         List<Vuelo> lstVuelo = vueloRepository.findAll();
-        List<VueloListDTO> lstVueloDTO = lstVuelo.stream()
-                .map(vuelo -> modelMapper.map(vuelo,VueloListDTO.class))
+        List<VueloGetAllResponseDTO> lstVueloGetAllResponseDTO = lstVuelo.stream()
+                .map(vuelo -> modelMapper.map(vuelo, VueloGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstVueloDTO;
+        return lstVueloGetAllResponseDTO;
     }
 
-    public void updateById(Long vueId, VueloSaveDTO vueloSaveDTO) {
+    public void updateById(Long vueId, VueloUpdateByIdRequestDTO vueloUpdateByIdRequestDTO) {
         Optional<Vuelo> findVueloById = vueloRepository.findById(vueId);
         if (!findVueloById.isPresent()) {
             throw new ResourceNotFoundException("Vuelo Not Found");
         }
         Vuelo updateVuelo = findVueloById.get();
-        updateVuelo.setVueFHPartida(vueloSaveDTO.getVueFHPartida());
-        updateVuelo.setVueFHLlegada(vueloSaveDTO.getVueFHLlegada());
-        updateVuelo.setRuta(Ruta.builder().rtaId(vueloSaveDTO.getRtaId()).build());
-        updateVuelo.setAvion(Avion.builder().aviId(vueloSaveDTO.getAviId()).build());
+        updateVuelo.setVueFHPartida(vueloUpdateByIdRequestDTO.getVueFHPartida());
+        updateVuelo.setVueFHLlegada(vueloUpdateByIdRequestDTO.getVueFHLlegada());
+        updateVuelo.setRuta(Ruta.builder().rtaId(vueloUpdateByIdRequestDTO.getRtaId()).build());
+        updateVuelo.setAvion(Avion.builder().aviId(vueloUpdateByIdRequestDTO.getAviId()).build());
         updateVuelo.setVueFUpdate(LocalDateTime.now());
         updateVuelo.setVueUUpdate("Piero");
         vueloRepository.save(updateVuelo);
@@ -83,20 +85,20 @@ public class VueloService {
         vueloRepository.activateByVueId(vueId);
     }
 
-    public List<VueloListDTO> getAllDeactivate() {
+    public List<VueloGetAllResponseDTO> getAllDeactivate() {
         List<Vuelo> lstVuelo = vueloRepository.getAllDeactivate();
-        List<VueloListDTO> lstVueloDTO = lstVuelo.stream()
-                .map(vuelo -> modelMapper.map(vuelo,VueloListDTO.class))
+        List<VueloGetAllResponseDTO> lstVueloGetAllResponseDTO = lstVuelo.stream()
+                .map(vuelo -> modelMapper.map(vuelo, VueloGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstVueloDTO;
+        return lstVueloGetAllResponseDTO;
     }
 
-    public List<VueloListDTO> getAllActivated() {
+    public List<VueloGetAllResponseDTO> getAllActivated() {
         List<Vuelo> lstVuelo = vueloRepository.getAllActivated();
-        List<VueloListDTO> lstVueloDTO = lstVuelo.stream()
-                .map(vuelo -> modelMapper.map(vuelo,VueloListDTO.class))
+        List<VueloGetAllResponseDTO> lstVueloGetAllResponseDTO = lstVuelo.stream()
+                .map(vuelo -> modelMapper.map(vuelo, VueloGetAllResponseDTO.class))
                 .collect(Collectors.toList());
-        return lstVueloDTO;
+        return lstVueloGetAllResponseDTO;
     }
 
 }

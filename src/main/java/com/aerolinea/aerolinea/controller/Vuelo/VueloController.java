@@ -1,7 +1,9 @@
 package com.aerolinea.aerolinea.controller.Vuelo;
 
-import com.aerolinea.aerolinea.dto.Vuelo.VueloListDTO;
-import com.aerolinea.aerolinea.dto.Vuelo.VueloSaveDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Request.VueloUpdateByIdRequestDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Response.VueloCreateResponseDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Response.VueloGetAllResponseDTO;
+import com.aerolinea.aerolinea.dto.Vuelo.Request.VueloCreateRequestDTO;
 import com.aerolinea.aerolinea.service.Vuelo.VueloService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Vuelo")
+@RequestMapping("/vuelo")
 public class VueloController {
 
     private final VueloService vueloService;
@@ -20,56 +22,49 @@ public class VueloController {
         this.vueloService = vueloService;
     }
 
-    @PostMapping("/Create")
-    public ResponseEntity<VueloSaveDTO> Create(@Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
-        VueloSaveDTO vuelo = vueloService.create(vueloSaveDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Message", "Vuelo creado correctamente")
-                .body(vuelo);
+    @PostMapping("/create")
+    public ResponseEntity<VueloCreateResponseDTO> create(@Valid @RequestBody VueloCreateRequestDTO vueloCreateRequestDTO) {
+        VueloCreateResponseDTO vuelo = vueloService.create(vueloCreateRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(vuelo);
     }
 
-    @GetMapping("/GetAll")
-    public ResponseEntity<List<VueloListDTO>> GetAll() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(vueloService.getAll());
+    @GetMapping("/getAll")
+    public ResponseEntity<List<VueloGetAllResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(vueloService.getAll());
     }
 
-    @PutMapping("/UpdateById/{vueId}")
-    public ResponseEntity<Void> UpdateById(@PathVariable Long vueId, @Valid @RequestBody VueloSaveDTO vueloSaveDTO) {
-        vueloService.updateById(vueId, vueloSaveDTO);
+    @PutMapping("/updateById/{vueId}")
+    public ResponseEntity<Void> updateById(@PathVariable Long vueId, @Valid @RequestBody VueloUpdateByIdRequestDTO vueloUpdateByIdRequestDTO) {
+        vueloService.updateById(vueId, vueloUpdateByIdRequestDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/DeleteById/{vueId}")
-    public ResponseEntity<Void> DeleteById(@PathVariable Long vueId) {
+    @DeleteMapping("/deleteById/{vueId}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long vueId) {
         vueloService.deleteById(vueId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/DeactivateByVueId/{vueId}")
-    public ResponseEntity<Void> DeactivateByVueId(@PathVariable Long vueId) {
+    @PatchMapping("/deactivateByVueId/{vueId}")
+    public ResponseEntity<Void> deactivateByVueId(@PathVariable Long vueId) {
         vueloService.deactivateByVueId(vueId);
-        return ResponseEntity.status(HttpStatus.OK).
-                header("Message","Vuelo desactivado correctamente").
-                build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/ActivateByVueId/{vueId}")
-    public ResponseEntity<Void> ActivateByVueId(@PathVariable Long vueId) {
+    @PatchMapping("/activateByVueId/{vueId}")
+    public ResponseEntity<Void> activateByVueId(@PathVariable Long vueId) {
         vueloService.activateByVueId(vueId);
-        return ResponseEntity.status(HttpStatus.OK).
-                header("Message","Vuelo activado correctamente").
-                build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/GetAllDeactivate")
-    public ResponseEntity<List<VueloListDTO>> GetAllDeactivate() {
+    @GetMapping("/getAllDeactivate")
+    public ResponseEntity<List<VueloGetAllResponseDTO>> getAllDeactivate() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(vueloService.getAllDeactivate());
     }
 
-    @GetMapping("/GetAllActivated")
-    public ResponseEntity<List<VueloListDTO>> GetAllActivated() {
+    @GetMapping("/getAllActivated")
+    public ResponseEntity<List<VueloGetAllResponseDTO>> getAllActivated() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(vueloService.getAllActivated());
     }

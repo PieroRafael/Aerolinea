@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/Auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
@@ -24,8 +24,8 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/RegisterUser")
-    public ResponseEntity<MessageResponse> RegisterUser(@Valid @RequestBody SignupRequest signupRequest) {
+    @PostMapping("/registerUser")
+    public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         authService.registerUser(signupRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse());
     }

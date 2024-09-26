@@ -1,15 +1,11 @@
-package com.aerolinea.aerolinea.dto.Vuelo;
+package com.aerolinea.aerolinea.dto.Vuelo.Response;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Data
-public class VueloListDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class VueloGetAllResponseDTO {
 
     private ZonedDateTime vueFHPartida;
 
